@@ -156,16 +156,10 @@ textarea{
     position:absolute;
     top:50%;
     left:50%;
-
-    transform:
-    translate(-50%,-50%)
-    rotate(-25deg);
-
+    transform:translate(-50%,-50%) rotate(-25deg);
     font-size:50px;
     font-weight:900;
-
     color:rgba(0,30,168,0.05);
-
     z-index:0;
     pointer-events:none;
 }
@@ -178,16 +172,9 @@ textarea{
     width:380px;
     height:380px;
     border-radius:50%;
-    background:
-    linear-gradient(
-    135deg,
-    #001ea8,
-    #f4b400
-    );
-
+    background:linear-gradient(135deg,#001ea8,#f4b400);
     top:-180px;
     right:-180px;
-
     opacity:0.08;
 }
 
@@ -197,16 +184,9 @@ textarea{
     width:420px;
     height:420px;
     border-radius:50%;
-    background:
-    linear-gradient(
-    135deg,
-    #f4b400,
-    #001ea8
-    );
-
+    background:linear-gradient(135deg,#f4b400,#001ea8);
     bottom:-220px;
     left:-220px;
-
     opacity:0.08;
 }
 
@@ -216,11 +196,8 @@ textarea{
     display:flex;
     justify-content:space-between;
     align-items:flex-start;
-
     padding-bottom:18px;
-
     border-bottom:3px solid #f4b400;
-
     position:relative;
     z-index:2;
 }
@@ -246,7 +223,7 @@ textarea{
 .company-details p{
     font-size:9px;
     color:#374151;
-    font-weight: bold;
+    font-weight:bold;
     line-height:1.8;
 }
 
@@ -278,14 +255,12 @@ textarea{
     z-index:2;
 }
 
-/* ensure both boxes behave same */
 .bill-box{
     width:100%;
     border:1px solid #dbe4ff;
     border-radius:10px;
     padding:15px;
     background:#fff;
-    box-sizing:border-box;
 }
 
 /* ================= TABLE ================= */
@@ -296,7 +271,6 @@ table{
     margin-top:25px;
     border-radius:10px;
     overflow:hidden;
-
     position:relative;
     z-index:2;
 }
@@ -376,8 +350,8 @@ table td{
 
 .signature{
     margin-top:70px;
-    text-align:right;
-
+    display:flex;
+    justify-content:space-between;
     position:relative;
     z-index:2;
 }
@@ -386,23 +360,15 @@ table td{
     font-size:11px;
 }
 
-.signature p:last-child{
-    color:#001ea8;
-    font-weight:700;
-}
-
 /* ================= FOOTER ================= */
 
 .footer{
     margin-top:35px;
     padding-top:15px;
     border-top:1px solid #dbe4ff;
-
     text-align:center;
-
     color:#6b7280;
     font-size:10px;
-
     position:relative;
     z-index:2;
 }
@@ -416,11 +382,7 @@ table td{
     }
 
     .billing{
-        flex-direction:column;
-    }
-
-    .bill-box{
-        width:100%;
+        grid-template-columns:1fr;
     }
 
     .bank-grid{
@@ -436,21 +398,9 @@ table td{
         text-align:left;
     }
 
-    .invoice-title h2{
-        font-size:32px;
-    }
-
-    .logo{
-        width:130px;
-    }
-
     .invoice{
         width:100%;
         padding:20px;
-    }
-
-    .watermark{
-        font-size:70px;
     }
 }
 
@@ -461,11 +411,15 @@ table td{
     body{
         background:#fff;
         padding:0;
+        margin:0;
     }
 
-    .form-section,
+    .form-section{
+        display:none !important;
+    }
+
     .print-btn{
-        display:none;
+        display:none !important;
     }
 
     .invoice{
@@ -473,9 +427,9 @@ table td{
         width:100%;
         min-height:auto;
         box-shadow:none;
+        margin:0;
+        padding:15mm;
     }
-
-    /* FIX BANK DETAILS PRINT ISSUE */
 
     .bank-grid{
         display:grid !important;
@@ -488,13 +442,15 @@ table td{
         page-break-inside:avoid;
     }
 
-    /* FIX TABLE PRINT */
-
     table{
         width:100% !important;
     }
 
-    /* KEEP COLORS IN PRINT */
+    tr,
+    td,
+    th{
+        page-break-inside:avoid;
+    }
 
     *{
         -webkit-print-color-adjust:exact !important;
@@ -572,26 +528,15 @@ GO PLANE
 
 <h1>GO PLANE PRIVATE LIMITED</h1>
 
-<p>
-Rashid Manson, B-2, House: 13, Road: 03, Block: A, Mirpur 11, Dhaka 1216. Bangladesh
-</p>
-<p>
-2 New Paltan, Culvert Road, Rupayan FPAB Tower, Suite Q, 1st Floor, Dhaka - 1000
-</p>
+<p>Rashid Manson, B-2, House: 13, Road: 03, Block: A, Mirpur 11, Dhaka 1216. Bangladesh</p>
 
-<p>
-Email: info@goplane.com
-</p>
+<p>2 New Paltan, Culvert Road, Rupayan FPAB Tower, Suite Q, 1st Floor, Dhaka - 1000</p>
 
-<p>
-Telephone: +880 2226-623463
-</p>
-<p>
+<p>Email: info@goplane.com</p>
 
+<p>Telephone: +880 2226-623463</p>
 
-<p>
-Website: www.goplane.com
-</p>
+<p>Website: www.goplane.com</p>
 
 </div>
 
@@ -625,7 +570,8 @@ Website: www.goplane.com
 <h3>Payment Terms</h3>
 
 <p><strong>Payment Terms:</strong> As per company policies.</p>
-<p><strong>Due Date:</strong> Payable immediately upon invoice issuance, unless otherwise agreed in writing.</p>
+<p><strong>Due Date:</strong> Payable immediately upon invoice issuance.</p>
+
 </div>
 
 </div>
@@ -638,10 +584,11 @@ Website: www.goplane.com
 <th>SL</th>
 <th>Passenger Name</th>
 <th>Ticket Number</th>
+<th>PNR</th>
 <th>Route</th>
 <th>Airline</th>
 <th>Departure Date</th>
-<th>Amount ( In BDT )</th>
+<th>Amount (BDT)</th>
 </tr>
 
 </thead>
@@ -649,8 +596,9 @@ Website: www.goplane.com
 <tbody id="invoiceTableBody"></tbody>
 
 </table>
-<div class="amount-words" style="margin-top:20px; font-size:11px; font-weight:600; color:#111827;">
-    Amount in Words: <span id="amountInWords"></span>
+
+<div class="amount-words" style="margin-top:20px; font-size:11px; font-weight:600;">
+Amount in Words: <span id="amountInWords"></span>
 </div>
 
 <div class="total">
@@ -664,57 +612,49 @@ Website: www.goplane.com
 <div class="bank-grid">
 
 <div class="bank-box">
-
-<p><strong>BRAC BANK PLC </strong></p>
+<p><strong>BRAC BANK PLC</strong></p>
 <p>A/C Name: GO PLANE PRIVATE LIMITED</p>
 <p>A/C No: 2074065900001</p>
-<p>Branch: Mirpur Branch </p>
+<p>Branch: Mirpur Branch</p>
 <p>Routing No : 60262983</p>
-
 </div>
 
 <div class="bank-box">
-
 <p><strong>Dutch Bangla Bank PLC</strong></p>
 <p>A/C Name: GO PLANE PRIVATE LIMITED</p>
 <p>A/C No: 2111100360371</p>
 <p>Branch: Pallabi Branch</p>
 <p>Routing No : 90263581</p>
-
 </div>
 
 <div class="bank-box">
-
 <p><strong>Meghna Bank PLC</strong></p>
 <p>A/C Name: GO PLANE PRIVATE LIMITED</p>
 <p>A/C No: 100711100000132</p>
 <p>Branch: Agent banking-Dhaka South</p>
 <p>Routing No : 275270607</p>
-
 </div>
 
 </div>
 
 </div>
 
-<div class="signature" style="display:flex; justify-content:space-between; margin-top:70px;">
+<div class="signature">
 
-    <div style="text-align:left;">
-        <p>__________________________</p>
-        <p>Received By</p>
-    </div>
+<div>
+<p>__________________________</p>
+<p>Received By</p>
+</div>
 
-    <div style="text-align:right;">
-        <p>__________________________</p>
-        <p>Authorized Signature</p>
-    </div>
+<div>
+<p>__________________________</p>
+<p>Authorized Signature</p>
+</div>
 
 </div>
 
 <div class="footer">
-
 THANK YOU FOR CHOOSING GO PLANE PRIVATE LIMITED
-
 </div>
 
 <button class="btn print-btn" onclick="window.print()">
@@ -737,6 +677,7 @@ function numberToWords(num){
     const tens = ["","","Twenty","Thirty","Forty","Fifty","Sixty","Seventy","Eighty","Ninety"];
 
     function convert(n){
+
         let str = "";
 
         if(n >= 100){
@@ -772,9 +713,6 @@ function numberToWords(num){
     return result.trim();
 }
 
-
-/* ================= PASSENGER ================= */
-
 let passengerCount = 0;
 
 function addPassenger(){
@@ -788,6 +726,7 @@ function addPassenger(){
     box.classList.add("passenger-box");
 
     box.innerHTML = `
+
     <h3>Passenger ${passengerCount}</h3>
 
     <div class="form-grid">
@@ -800,6 +739,11 @@ function addPassenger(){
     <div>
     <label>Ticket Number</label>
     <input type="text" class="ticket">
+    </div>
+
+    <div>
+    <label>PNR</label>
+    <input type="text" class="pnr">
     </div>
 
     <div>
@@ -830,9 +774,6 @@ function addPassenger(){
 
 addPassenger();
 
-
-/* ================= GENERATE INVOICE ================= */
-
 function generateInvoice(){
 
     document.getElementById("invoiceArea").style.display = "block";
@@ -852,9 +793,9 @@ function generateInvoice(){
     document.getElementById("showAddress").innerHTML =
     "<strong>Address:</strong> " + document.getElementById("address").value;
 
-
     const names = document.querySelectorAll(".name");
     const tickets = document.querySelectorAll(".ticket");
+    const pnrs = document.querySelectorAll(".pnr");
     const routes = document.querySelectorAll(".route");
     const airlines = document.querySelectorAll(".airline");
     const departures = document.querySelectorAll(".departure");
@@ -877,10 +818,11 @@ function generateInvoice(){
         <td>${i+1}</td>
         <td>${names[i].value}</td>
         <td>${tickets[i].value}</td>
+        <td>${pnrs[i].value}</td>
         <td>${routes[i].value}</td>
         <td>${airlines[i].value}</td>
         <td>${departures[i].value}</td>
-        <td>${amount.toLocaleString()} </td>
+        <td>${amount.toLocaleString()}</td>
         </tr>
         `;
     }
@@ -888,21 +830,16 @@ function generateInvoice(){
     document.getElementById("grandTotal").innerHTML =
     "TOTAL : " + total.toLocaleString() + " BDT";
 
-    const wordsBox = document.getElementById("amountInWords");
-
-    if(wordsBox){
-        wordsBox.innerText = numberToWords(total) + " Taka Only";
-    }
+    document.getElementById("amountInWords").innerText =
+    numberToWords(total) + " Taka Only";
 
     window.scrollTo({
         top: document.body.scrollHeight,
-        behavior: 'smooth'
+        behavior:'smooth'
     });
 }
 
 </script>
-
-
 
 </body>
 </html>
