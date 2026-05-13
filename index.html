@@ -3,842 +3,928 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>GO PLANE PRIVATE LIMITED - Professional Invoice</title>
+<title>GO PLANE PRIVATE LIMITED — Invoice Generator</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 
 <style>
-
-@page{
-    size:A4;
-    margin:10mm;
+/* ===== VARIABLES ===== */
+:root {
+  --navy:   #001ea8;
+  --navy-d: #00158a;
+  --gold:   #f4b400;
+  --gold-l: #ffd54f;
+  --ink:    #0d1117;
+  --muted:  #6b7280;
+  --border: #dbe4ff;
+  --surface:#f8faff;
+  --white:  #ffffff;
+  --danger: #ef4444;
+  --radius: 10px;
+  --shadow: 0 4px 24px rgba(0,30,168,.10);
 }
 
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    font-family:Arial,sans-serif;
+@page { size:A4; margin:10mm; }
+
+*, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
+
+body {
+  font-family:'DM Sans', sans-serif;
+  background: linear-gradient(135deg,#eef2ff 0%,#f0f4ff 100%);
+  min-height:100vh;
+  padding:28px 20px;
+  color:var(--ink);
+  font-size:13px;
 }
 
-body{
-    background:
-    linear-gradient(
-    135deg,
-    rgba(255,255,255,0.98),
-    rgba(255,255,255,0.98)
-    ),
-    #eef2ff;
-
-    padding:20px;
-    color:#111827;
-    font-size:12px;
+/* ===== FORM CARD ===== */
+.form-card {
+  max-width:860px;
+  margin:0 auto 32px;
+  background:var(--white);
+  border-radius:18px;
+  box-shadow: var(--shadow);
+  overflow:hidden;
 }
 
-.container{
-    max-width:1200px;
-    margin:auto;
+.form-header {
+  background: linear-gradient(135deg,var(--navy) 60%,#1a35c4);
+  padding:26px 32px;
+  display:flex;
+  align-items:center;
+  gap:18px;
 }
 
-/* ================= FORM ================= */
-
-.form-section{
-    background:#fff;
-    padding:25px;
-    border-radius:12px;
-    margin-bottom:25px;
-    box-shadow:0 5px 20px rgba(0,0,0,0.08);
+.form-header-icon {
+  width:46px; height:46px;
+  background:rgba(255,255,255,.12);
+  border-radius:12px;
+  display:flex; align-items:center; justify-content:center;
+  font-size:22px;
 }
 
-.form-section h1{
-    font-size:26px;
-    color:#001ea8;
-    margin-bottom:20px;
-    font-weight:800;
+.form-header h1 {
+  font-family:'Playfair Display', serif;
+  font-size:22px;
+  color:#fff;
+  font-weight:700;
+  line-height:1.2;
 }
 
-.form-grid{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:15px;
+.form-header p {
+  font-size:12px;
+  color:rgba(255,255,255,.65);
+  margin-top:3px;
 }
 
-label{
-    display:block;
-    margin-bottom:6px;
-    font-size:12px;
-    font-weight:700;
+.form-body { padding:28px 32px; }
+
+.section-label {
+  font-size:10px;
+  font-weight:700;
+  letter-spacing:1.2px;
+  text-transform:uppercase;
+  color:var(--navy);
+  margin-bottom:14px;
+  padding-bottom:8px;
+  border-bottom:2px solid var(--border);
 }
 
-input,
-textarea{
-    width:100%;
-    border:1px solid #dbe4ff;
-    padding:11px;
-    border-radius:6px;
-    font-size:12px;
+.form-grid {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:16px;
+  margin-bottom:20px;
 }
 
-input:focus,
-textarea:focus{
-    border-color:#001ea8;
-    outline:none;
-    box-shadow:0 0 0 3px rgba(0,30,168,0.08);
+.form-group { display:flex; flex-direction:column; gap:6px; }
+
+label {
+  font-size:11px;
+  font-weight:600;
+  color:#374151;
+  letter-spacing:.3px;
 }
 
-textarea{
-    resize:vertical;
+input, textarea, select {
+  width:100%;
+  border:1.5px solid var(--border);
+  padding:10px 13px;
+  border-radius:8px;
+  font-size:12px;
+  font-family:'DM Sans', sans-serif;
+  color:var(--ink);
+  background:#fff;
+  transition: border .2s, box-shadow .2s;
 }
 
-.passenger-box{
-    margin-top:18px;
-    padding:18px;
-    border-radius:10px;
-    border:1px solid #dbe4ff;
-    background:#fafcff;
+input:focus, textarea:focus, select:focus {
+  border-color:var(--navy);
+  outline:none;
+  box-shadow:0 0 0 3px rgba(0,30,168,.08);
 }
 
-.passenger-box h3{
-    font-size:15px;
-    color:#001ea8;
-    margin-bottom:12px;
+input::placeholder, textarea::placeholder { color:#aab4cc; }
+
+textarea { resize:vertical; min-height:68px; }
+
+/* ===== PASSENGER BLOCK ===== */
+.passengers-wrap { margin-bottom:20px; }
+
+.passenger-card {
+  border:1.5px solid var(--border);
+  border-radius:var(--radius);
+  background:var(--surface);
+  margin-bottom:12px;
+  overflow:hidden;
+  animation: slideIn .25s ease;
 }
 
-/* ================= BUTTONS ================= */
-
-.btn{
-    border:none;
-    padding:11px 18px;
-    border-radius:6px;
-    cursor:pointer;
-    font-size:12px;
-    font-weight:700;
-    margin-top:18px;
-    transition:0.3s;
+@keyframes slideIn {
+  from { opacity:0; transform:translateY(-8px); }
+  to   { opacity:1; transform:translateY(0); }
 }
 
-.btn:hover{
-    transform:translateY(-2px);
+.passenger-head {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:11px 16px;
+  background:linear-gradient(90deg,rgba(0,30,168,.06),transparent);
+  border-bottom:1px solid var(--border);
 }
 
-.add-btn{
-    background:#001ea8;
-    color:#fff;
+.passenger-head span {
+  font-size:12px;
+  font-weight:700;
+  color:var(--navy);
+  display:flex; align-items:center; gap:7px;
 }
 
-.generate-btn{
-    background:#f4b400;
-    color:#111827;
+.passenger-head span::before {
+  content:'✈';
+  font-size:13px;
 }
 
-.print-btn{
-    background:#001ea8;
-    color:#fff;
-    margin-top:20px;
+.remove-btn {
+  background:transparent;
+  border:1.5px solid #fca5a5;
+  color:var(--danger);
+  padding:4px 10px;
+  border-radius:5px;
+  font-size:11px;
+  font-weight:600;
+  cursor:pointer;
+  transition:.2s;
 }
 
-/* ================= INVOICE ================= */
-
-.invoice{
-    width:210mm;
-    min-height:297mm;
-    background:#fff;
-    margin:auto;
-    padding:15mm;
-    position:relative;
-    overflow:hidden;
-    display:none;
-    box-shadow:0 0 20px rgba(0,0,0,0.08);
+.remove-btn:hover {
+  background:#fef2f2;
 }
 
-/* WATERMARK */
+.passenger-body { padding:14px 16px; }
 
-.watermark{
-    position:absolute;
-    top:50%;
-    left:50%;
-    transform:translate(-50%,-50%) rotate(-25deg);
-    font-size:50px;
-    font-weight:900;
-    color:rgba(0,30,168,0.05);
-    z-index:0;
-    pointer-events:none;
+/* ===== BUTTONS ===== */
+.btn-row {
+  display:flex;
+  gap:12px;
+  flex-wrap:wrap;
+  margin-top:6px;
 }
 
-/* DESIGN */
-
-.invoice::before{
-    content:"";
-    position:absolute;
-    width:380px;
-    height:380px;
-    border-radius:50%;
-    background:linear-gradient(135deg,#001ea8,#f4b400);
-    top:-180px;
-    right:-180px;
-    opacity:0.08;
+.btn {
+  border:none;
+  padding:11px 22px;
+  border-radius:8px;
+  cursor:pointer;
+  font-size:12px;
+  font-weight:700;
+  font-family:'DM Sans', sans-serif;
+  display:flex; align-items:center; gap:8px;
+  transition: transform .2s, box-shadow .2s;
+  letter-spacing:.3px;
 }
 
-.invoice::after{
-    content:"";
-    position:absolute;
-    width:420px;
-    height:420px;
-    border-radius:50%;
-    background:linear-gradient(135deg,#f4b400,#001ea8);
-    bottom:-220px;
-    left:-220px;
-    opacity:0.08;
+.btn:hover { transform:translateY(-2px); }
+
+.btn-add {
+  background:var(--surface);
+  color:var(--navy);
+  border:1.5px solid var(--border);
+}
+.btn-add:hover { border-color:var(--navy); background:#eef2ff; }
+
+.btn-generate {
+  background:linear-gradient(135deg,var(--gold) 0%,#ffca28 100%);
+  color:var(--ink);
+  box-shadow:0 4px 14px rgba(244,180,0,.35);
 }
 
-/* ================= HEADER ================= */
-
-.header{
-    display:flex;
-    justify-content:space-between;
-    align-items:flex-start;
-    padding-bottom:18px;
-    border-bottom:3px solid #f4b400;
-    position:relative;
-    z-index:2;
+.btn-print {
+  background:linear-gradient(135deg,var(--navy) 0%,#1a35c4 100%);
+  color:#fff;
+  box-shadow:0 4px 14px rgba(0,30,168,.3);
+  margin:20px auto 0;
+  display:flex;
+  width:fit-content;
 }
 
-.company{
-    display:flex;
-    gap:15px;
+/* ===== INVOICE ===== */
+.invoice {
+  width:210mm;
+  min-height:297mm;
+  background:#fff;
+  margin:0 auto;
+  padding:14mm 14mm 12mm;
+  position:relative;
+  overflow:hidden;
+  display:none;
+  box-shadow: 0 8px 40px rgba(0,0,0,.12);
+  border-radius:4px;
 }
 
-.logo{
-    width:100px;
-    height:auto;
-    object-fit:contain;
+/* decorative circles */
+.invoice::before {
+  content:'';
+  position:absolute;
+  width:340px; height:340px;
+  border-radius:50%;
+  background:conic-gradient(from 180deg,#001ea820,#f4b40020,#001ea820);
+  top:-170px; right:-150px;
+  pointer-events:none;
 }
 
-.company-details h1{
-    font-size:20px;
-    color:#001ea8;
-    font-weight:900;
-    margin-bottom:5px;
+.invoice::after {
+  content:'';
+  position:absolute;
+  width:360px; height:360px;
+  border-radius:50%;
+  background:conic-gradient(from 0deg,#f4b40015,#001ea815,#f4b40015);
+  bottom:-200px; left:-170px;
+  pointer-events:none;
 }
 
-.company-details p{
-    font-size:9px;
-    color:#374151;
-    font-weight:bold;
-    line-height:1.8;
+/* watermark */
+.watermark {
+  position:absolute;
+  top:50%; left:50%;
+  transform:translate(-50%,-50%) rotate(-30deg);
+  font-family:'Playfair Display', serif;
+  font-size:62px;
+  font-weight:900;
+  color:rgba(0,30,168,.04);
+  pointer-events:none;
+  white-space:nowrap;
+  z-index:0;
+  letter-spacing:4px;
 }
 
-.invoice-title{
-    text-align:right;
+.inv-content { position:relative; z-index:2; }
+
+/* ===== INV HEADER ===== */
+.inv-header {
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  padding-bottom:16px;
+  border-bottom:3px solid var(--gold);
+  margin-bottom:20px;
 }
 
-.invoice-title h2{
-    font-size:22px;
-    color:#001ea8;
-    font-weight:900;
-    letter-spacing:1px;
-    margin-bottom:10px;
+.inv-brand { display:flex; gap:14px; align-items:flex-start; }
+
+.inv-logo {
+  width:90px; height:auto;
+  object-fit:contain;
 }
 
-.invoice-title p{
-    font-size:11px;
-    margin-bottom:5px;
+.inv-company-name {
+  font-family:'Playfair Display', serif;
+  font-size:16px;
+  color:var(--navy);
+  font-weight:900;
+  margin-bottom:5px;
+  line-height:1.2;
 }
 
-/* ================= BILLING ================= */
-
-.billing{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:15px;
-    margin-top:22px;
-    position:relative;
-    z-index:2;
+.inv-company-details {
+  font-size:8.5px;
+  color:#374151;
+  line-height:1.85;
+  font-weight:500;
 }
 
-.bill-box{
-    width:100%;
-    border:1px solid #dbe4ff;
-    border-radius:10px;
-    padding:15px;
-    background:#fff;
+.inv-title-block { text-align:right; }
+
+.inv-title-block h2 {
+  font-family:'Playfair Display', serif;
+  font-size:34px;
+  color:var(--navy);
+  font-weight:900;
+  letter-spacing:3px;
+  line-height:1;
+  margin-bottom:10px;
 }
 
-/* ================= TABLE ================= */
-
-table{
-    width:100%;
-    border-collapse:collapse;
-    margin-top:25px;
-    border-radius:10px;
-    overflow:hidden;
-    position:relative;
-    z-index:2;
+.inv-meta {
+  font-size:10px;
+  line-height:2;
+  color:#374151;
 }
 
-table th{
-    background:#001ea8;
-    color:#fff;
-    padding:10px;
-    font-size:11px;
-    border-bottom:3px solid #f4b400;
+.inv-meta strong { color:var(--navy); }
+
+/* badge */
+.inv-badge {
+  display:inline-block;
+  background:var(--navy);
+  color:#fff;
+  font-size:8px;
+  font-weight:700;
+  letter-spacing:1px;
+  padding:3px 8px;
+  border-radius:3px;
+  margin-bottom:8px;
+  text-transform:uppercase;
 }
 
-table td{
-    border:1px solid #e5e7eb;
-    padding:10px;
-    font-size:11px;
-    vertical-align:top;
+/* ===== BILLING GRID ===== */
+.billing {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:14px;
+  margin-bottom:22px;
 }
 
-/* ================= TOTAL ================= */
-
-.total{
-    margin-top:20px;
-    text-align:right;
-    position:relative;
-    z-index:2;
+.bill-box {
+  border:1px solid var(--border);
+  border-radius:8px;
+  padding:14px 16px;
+  background:var(--surface);
 }
 
-.total h2{
-    display:inline-block;
-    background:#001ea8;
-    color:#fff;
-    padding:12px 25px;
-    border-radius:6px;
-    border-right:5px solid #f4b400;
-    font-size:18px;
+.bill-box-title {
+  font-size:9px;
+  font-weight:700;
+  letter-spacing:1.2px;
+  text-transform:uppercase;
+  color:var(--navy);
+  margin-bottom:8px;
+  padding-bottom:6px;
+  border-bottom:1px solid var(--border);
 }
 
-/* ================= BANK ================= */
-
-.bank-section{
-    margin-top:35px;
-    position:relative;
-    z-index:2;
+.bill-box p {
+  font-size:10px;
+  line-height:1.9;
+  color:#374151;
 }
 
-.bank-section h3{
-    color:#001ea8;
-    font-size:14px;
-    margin-bottom:12px;
+.bill-box strong { color:var(--ink); }
+
+/* ===== TABLE ===== */
+.inv-table {
+  width:100%;
+  border-collapse:collapse;
+  margin-bottom:18px;
 }
 
-.bank-grid{
-    display:grid;
-    grid-template-columns:1fr 1fr 1fr;
-    gap:15px;
+.inv-table thead th {
+  background:var(--navy);
+  color:#fff;
+  padding:9px 11px;
+  font-size:9.5px;
+  font-weight:700;
+  letter-spacing:.5px;
+  text-transform:uppercase;
+  border-bottom:3px solid var(--gold);
+  text-align:left;
 }
 
-.bank-box{
-    background:#fff;
-    border:1px solid #dbe4ff;
-    border-radius:10px;
-    padding:12px;
+.inv-table thead th:last-child { text-align:right; }
+
+.inv-table tbody tr:nth-child(even) td { background:#f8faff; }
+
+.inv-table tbody td {
+  border-bottom:1px solid #e5e7eb;
+  padding:9px 11px;
+  font-size:10px;
+  color:#374151;
+  vertical-align:top;
 }
 
-.bank-box strong{
-    color:#001ea8;
-    font-size:11px;
+.inv-table tbody td:last-child {
+  text-align:right;
+  font-family:'DM Mono', monospace;
+  font-size:10px;
+  font-weight:600;
+  color:var(--ink);
 }
 
-.bank-box p{
-    font-size:10px;
-    line-height:1.8;
+.inv-table tbody td:first-child {
+  color:var(--muted);
+  font-weight:600;
+  width:28px;
 }
 
-/* ================= SIGNATURE ================= */
-
-.signature{
-    margin-top:70px;
-    display:flex;
-    justify-content:space-between;
-    position:relative;
-    z-index:2;
+/* ===== TOTALS ===== */
+.totals-wrap {
+  display:flex;
+  flex-direction:column;
+  align-items:flex-end;
+  gap:6px;
+  margin-bottom:18px;
 }
 
-.signature p{
-    font-size:11px;
+.amount-words-row {
+  font-size:10px;
+  color:#374151;
+  font-style:italic;
+  align-self:flex-start;
+  background:#fffbeb;
+  border:1px solid #fde68a;
+  padding:7px 14px;
+  border-radius:6px;
+  max-width:65%;
 }
 
-/* ================= FOOTER ================= */
+.amount-words-row strong { font-style:normal; color:var(--ink); }
 
-.footer{
-    margin-top:35px;
-    padding-top:15px;
-    border-top:1px solid #dbe4ff;
-    text-align:center;
-    color:#6b7280;
-    font-size:10px;
-    position:relative;
-    z-index:2;
+.total-box {
+  display:flex;
+  align-items:center;
+  gap:0;
+  border-radius:8px;
+  overflow:hidden;
+  box-shadow:0 3px 12px rgba(0,30,168,.18);
 }
 
-/* ================= RESPONSIVE ================= */
+.total-label {
+  background:var(--navy);
+  color:#fff;
+  font-size:10px;
+  font-weight:700;
+  letter-spacing:1px;
+  text-transform:uppercase;
+  padding:12px 18px;
+}
 
+.total-amount {
+  background:var(--gold);
+  color:var(--ink);
+  font-family:'DM Mono', monospace;
+  font-size:16px;
+  font-weight:700;
+  padding:10px 20px;
+  letter-spacing:.5px;
+}
+
+/* ===== BANK ===== */
+.bank-section { margin-bottom:28px; }
+
+.bank-title {
+  font-size:10px;
+  font-weight:700;
+  letter-spacing:1.2px;
+  text-transform:uppercase;
+  color:var(--navy);
+  margin-bottom:10px;
+  display:flex; align-items:center; gap:8px;
+}
+
+.bank-title::after {
+  content:'';
+  flex:1;
+  height:1px;
+  background:var(--border);
+}
+
+.bank-grid {
+  display:grid;
+  grid-template-columns:1fr 1fr 1fr;
+  gap:10px;
+}
+
+.bank-box {
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:8px;
+  padding:11px 13px;
+  border-top:3px solid var(--navy);
+}
+
+.bank-box .bank-name {
+  font-size:9.5px;
+  font-weight:800;
+  color:var(--navy);
+  margin-bottom:5px;
+}
+
+.bank-box p {
+  font-size:8.5px;
+  line-height:1.9;
+  color:#374151;
+}
+
+/* ===== SIGNATURE ===== */
+.signature-row {
+  display:flex;
+  justify-content:space-between;
+  margin-top:44px;
+  margin-bottom:24px;
+}
+
+.sig-block { text-align:center; }
+
+.sig-line {
+  width:160px;
+  height:1px;
+  background:var(--ink);
+  margin:0 auto 6px;
+}
+
+.sig-block p {
+  font-size:9px;
+  font-weight:600;
+  color:#374151;
+  text-transform:uppercase;
+  letter-spacing:.8px;
+}
+
+/* ===== FOOTER ===== */
+.inv-footer {
+  border-top:1px solid var(--border);
+  padding-top:12px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.inv-footer-left { font-size:8px; color:var(--muted); line-height:1.8; }
+.inv-footer-right {
+  font-size:9px;
+  font-family:'Playfair Display', serif;
+  color:var(--navy);
+  font-weight:700;
+  letter-spacing:1px;
+  text-align:right;
+}
+
+/* ===== STATUS BADGE for valid rows ===== */
+.status-dot {
+  display:inline-block;
+  width:7px; height:7px;
+  border-radius:50%;
+  background:#22c55e;
+  margin-right:5px;
+}
+
+/* ===== RESPONSIVE ===== */
 @media(max-width:768px){
-
-    .form-grid{
-        grid-template-columns:1fr;
-    }
-
-    .billing{
-        grid-template-columns:1fr;
-    }
-
-    .bank-grid{
-        grid-template-columns:1fr;
-    }
-
-    .header{
-        flex-direction:column;
-        gap:20px;
-    }
-
-    .invoice-title{
-        text-align:left;
-    }
-
-    .invoice{
-        width:100%;
-        padding:20px;
-    }
+  .form-grid { grid-template-columns:1fr; }
+  .form-body { padding:20px; }
+  .form-header { padding:20px; }
+  .invoice { width:100%; padding:14px; min-height:auto; }
+  .billing, .bank-grid { grid-template-columns:1fr; }
+  .inv-header { flex-direction:column; gap:16px; }
+  .inv-title-block { text-align:left; }
 }
 
-/* ================= PRINT ================= */
-
-@media print{
-
-    body{
-        background:#fff;
-        padding:0;
-        margin:0;
-    }
-
-    .form-section{
-        display:none !important;
-    }
-
-    .print-btn{
-        display:none !important;
-    }
-
-    .invoice{
-        display:block !important;
-        width:100%;
-        min-height:auto;
-        box-shadow:none;
-        margin:0;
-        padding:15mm;
-    }
-
-    .bank-grid{
-        display:grid !important;
-        grid-template-columns:1fr 1fr 1fr !important;
-        gap:10px !important;
-    }
-
-    .bank-box{
-        width:100% !important;
-        page-break-inside:avoid;
-    }
-
-    table{
-        width:100% !important;
-    }
-
-    tr,
-    td,
-    th{
-        page-break-inside:avoid;
-    }
-
-    *{
-        -webkit-print-color-adjust:exact !important;
-        print-color-adjust:exact !important;
-    }
+/* ===== PRINT ===== */
+@media print {
+  body { background:#fff; padding:0; }
+  .form-card, .btn-print { display:none !important; }
+  .invoice {
+    display:block !important;
+    width:100%; box-shadow:none; border-radius:0;
+    padding:10mm;
+  }
+  * { -webkit-print-color-adjust:exact !important; print-color-adjust:exact !important; }
+  .bank-grid { display:grid !important; grid-template-columns:1fr 1fr 1fr !important; }
+  .billing { display:grid !important; grid-template-columns:1fr 1fr !important; }
 }
-
 </style>
 </head>
 
 <body>
 
-<div class="container">
-
-<!-- ================= FORM ================= -->
-
-<div class="form-section">
-
-<h1>GO PLANE PRIVATE LIMITED - Invoice Generator</h1>
-
-<div class="form-grid">
-
-<div>
-<label>Invoice Date</label>
-<input type="date" id="invoiceDate">
-</div>
-
-<div>
-<label>Invoice Number</label>
-<input type="text" id="invoiceNo" placeholder="GP-2026-001">
-</div>
-
-<div>
-<label>Client Name</label>
-<input type="text" id="clientName">
-</div>
-
-<div>
-<label>Company Name</label>
-<input type="text" id="companyName">
-</div>
-
-</div>
-
-<label style="margin-top:15px;">Address</label>
-<textarea id="address"></textarea>
-
-<div id="passengerContainer"></div>
-
-<button class="btn add-btn" onclick="addPassenger()">
-+ Add Passenger
-</button>
-
-<button class="btn generate-btn" onclick="generateInvoice()">
-Generate Invoice
-</button>
-
-</div>
-
-<!-- ================= INVOICE ================= -->
-
-<div class="invoice" id="invoiceArea">
-
-<div class="watermark">
-GO PLANE
-</div>
-
-<div class="header">
-
-<div class="company">
-
-<img src="logo-main.webp" class="logo">
-
-<div class="company-details">
-
-<h1>GO PLANE PRIVATE LIMITED</h1>
-
-<p>Rashid Manson, B-2, House: 13, Road: 03, Block: A, Mirpur 11, Dhaka 1216. Bangladesh</p>
-
-<p>2 New Paltan, Culvert Road, Rupayan FPAB Tower, Suite Q, 1st Floor, Dhaka - 1000</p>
-
-<p>Email: info@goplane.com</p>
-
-<p>Telephone: +880 2226-623463</p>
-
-<p>Website: www.goplane.com</p>
-
-</div>
-
-</div>
-
-<div class="invoice-title">
-
-<h2>INVOICE</h2>
-
-<p id="showDate"></p>
-<p id="showInvoiceNo"></p>
-
-</div>
-
-</div>
-
-<div class="billing">
-
-<div class="bill-box">
-
-<h3>Bill To</h3>
-
-<p id="showClient"></p>
-<p id="showCompany"></p>
-<p id="showAddress"></p>
-
-</div>
-
-<div class="bill-box">
-
-<h3>Payment Terms</h3>
-
-<p><strong>Payment Terms:</strong> As per company policies.</p>
-<p><strong>Due Date:</strong> Payable immediately upon invoice issuance.</p>
-
-</div>
-
-</div>
-
-<table>
-
-<thead>
-
-<tr>
-<th>SL</th>
-<th>Passenger Name</th>
-<th>Ticket Number</th>
-<th>PNR</th>
-<th>Route</th>
-<th>Airline</th>
-<th>Departure Date</th>
-<th>Amount (BDT)</th>
-</tr>
-
-</thead>
-
-<tbody id="invoiceTableBody"></tbody>
-
-</table>
-
-<div class="amount-words" style="margin-top:20px; font-size:11px; font-weight:600;">
-Amount in Words: <span id="amountInWords"></span>
-</div>
-
-<div class="total">
-<h2 id="grandTotal"></h2>
-</div>
-
-<div class="bank-section">
-
-<h3>Bank Details</h3>
-
-<div class="bank-grid">
-
-<div class="bank-box">
-<p><strong>BRAC BANK PLC</strong></p>
-<p>A/C Name: GO PLANE PRIVATE LIMITED</p>
-<p>A/C No: 2074065900001</p>
-<p>Branch: Mirpur Branch</p>
-<p>Routing No : 60262983</p>
-</div>
-
-<div class="bank-box">
-<p><strong>Dutch Bangla Bank PLC</strong></p>
-<p>A/C Name: GO PLANE PRIVATE LIMITED</p>
-<p>A/C No: 2111100360371</p>
-<p>Branch: Pallabi Branch</p>
-<p>Routing No : 90263581</p>
-</div>
-
-<div class="bank-box">
-<p><strong>Meghna Bank PLC</strong></p>
-<p>A/C Name: GO PLANE PRIVATE LIMITED</p>
-<p>A/C No: 100711100000132</p>
-<p>Branch: Agent banking-Dhaka South</p>
-<p>Routing No : 275270607</p>
-</div>
-
-</div>
-
-</div>
-
-<div class="signature">
-
-<div>
-<p>__________________________</p>
-<p>Received By</p>
-</div>
-
-<div>
-<p>__________________________</p>
-<p>Authorized Signature</p>
-</div>
-
-</div>
-
-<div class="footer">
-THANK YOU FOR CHOOSING GO PLANE PRIVATE LIMITED
-</div>
-
-<button class="btn print-btn" onclick="window.print()">
-Print Invoice
-</button>
-
-</div>
-
-</div>
-
-<script>
-
-function numberToWords(num){
-
-    if(num === 0) return "Zero";
-
-    const ones = ["","One","Two","Three","Four","Five","Six","Seven","Eight","Nine","Ten",
-    "Eleven","Twelve","Thirteen","Fourteen","Fifteen","Sixteen","Seventeen","Eighteen","Nineteen"];
-
-    const tens = ["","","Twenty","Thirty","Forty","Fifty","Sixty","Seventy","Eighty","Ninety"];
-
-    function convert(n){
-
-        let str = "";
-
-        if(n >= 100){
-            str += ones[Math.floor(n/100)] + " Hundred ";
-            n = n % 100;
-        }
-
-        if(n >= 20){
-            str += tens[Math.floor(n/10)] + " ";
-            n = n % 10;
-        }
-
-        if(n > 0){
-            str += ones[n] + " ";
-        }
-
-        return str;
-    }
-
-    let result = "";
-
-    let thousand = Math.floor(num / 1000);
-    let remainder = num % 1000;
-
-    if(thousand > 0){
-        result += convert(thousand) + "Thousand ";
-    }
-
-    if(remainder > 0){
-        result += convert(remainder);
-    }
-
-    return result.trim();
-}
-
-let passengerCount = 0;
-
-function addPassenger(){
-
-    passengerCount++;
-
-    const container = document.getElementById("passengerContainer");
-
-    const box = document.createElement("div");
-
-    box.classList.add("passenger-box");
-
-    box.innerHTML = `
-
-    <h3>Passenger ${passengerCount}</h3>
+<!-- ===== FORM ===== -->
+<div class="form-card">
+
+  <div class="form-header">
+    <div class="form-header-icon">✈</div>
+    <div>
+      <h1>GO PLANE PRIVATE LIMITED</h1>
+      <p>Invoice Generator — Fill in the details below and generate</p>
+    </div>
+  </div>
+
+  <div class="form-body">
+
+    <div class="section-label">Invoice Details</div>
 
     <div class="form-grid">
-
-    <div>
-    <label>Passenger Name</label>
-    <input type="text" class="name">
+      <div class="form-group">
+        <label>Invoice Date</label>
+        <input type="date" id="invoiceDate">
+      </div>
+      <div class="form-group">
+        <label>Invoice Number</label>
+        <input type="text" id="invoiceNo" placeholder="GP-2026-001">
+      </div>
+      <div class="form-group">
+        <label>Client Name</label>
+        <input type="text" id="clientName" placeholder="Full name">
+      </div>
+      <div class="form-group">
+        <label>Company Name</label>
+        <input type="text" id="companyName" placeholder="Organisation (optional)">
+      </div>
     </div>
 
-    <div>
-    <label>Ticket Number</label>
-    <input type="text" class="ticket">
+    <div class="form-group" style="margin-bottom:24px;">
+      <label>Billing Address</label>
+      <textarea id="address" placeholder="Street, City, Country"></textarea>
     </div>
 
-    <div>
-    <label>PNR</label>
-    <input type="text" class="pnr">
+    <div class="section-label">Passenger & Flight Details</div>
+
+    <div class="passengers-wrap" id="passengerContainer"></div>
+
+    <div class="btn-row">
+      <button class="btn btn-add" onclick="addPassenger()">＋ Add Passenger</button>
+      <button class="btn btn-generate" onclick="generateInvoice()">⚡ Generate Invoice</button>
     </div>
 
-    <div>
-    <label>Route</label>
-    <input type="text" class="route">
+  </div>
+</div>
+
+<!-- ===== INVOICE ===== -->
+<div class="invoice" id="invoiceArea">
+
+  <div class="watermark">GO PLANE</div>
+
+  <div class="inv-content">
+
+    <!-- HEADER -->
+    <div class="inv-header">
+      <div class="inv-brand">
+        <img src="logo-main.webp" class="inv-logo" alt="Go Plane Logo">
+        <div>
+          <div class="inv-company-name">GO PLANE PRIVATE LIMITED</div>
+          <div class="inv-company-details">
+            Rashid Manson, B-2, House: 13, Road: 03, Block: A, Mirpur 11, Dhaka 1216. Bangladesh<br>
+            2 New Paltan, Culvert Road, Rupayan FPAB Tower, Suite Q, 1st Floor, Dhaka - 1000<br>
+            Email: info@goplane.com &nbsp;|&nbsp; Tel: +880 2226-623463 &nbsp;|&nbsp; www.goplane.com
+          </div>
+        </div>
+      </div>
+
+      <div class="inv-title-block">
+        <div class="inv-badge">Air Ticketing</div>
+        <h2>INVOICE</h2>
+        <div class="inv-meta">
+          <div><strong>Date:</strong> <span id="showDate"></span></div>
+          <div><strong>Invoice #:</strong> <span id="showInvoiceNo"></span></div>
+        </div>
+      </div>
     </div>
 
-    <div>
-    <label>Airline</label>
-    <input type="text" class="airline">
+    <!-- BILLING -->
+    <div class="billing">
+      <div class="bill-box">
+        <div class="bill-box-title">Bill To</div>
+        <p id="showClient"></p>
+        <p id="showCompany"></p>
+        <p id="showAddress"></p>
+      </div>
+      <div class="bill-box">
+        <div class="bill-box-title">Payment Terms</div>
+        <p><strong>Terms:</strong> As per company policy.</p>
+        <p><strong>Due Date:</strong> Payable immediately upon issuance, unless otherwise agreed in writing.</p>
+        <p><strong>Currency:</strong> Bangladeshi Taka (BDT)</p>
+      </div>
     </div>
 
-    <div>
-    <label>Departure Date</label>
-    <input type="date" class="departure">
-    </div>
-
-    <div>
-    <label>Amount (BDT)</label>
-    <input type="number" class="amount">
-    </div>
-
-    </div>
-    `;
-
-    container.appendChild(box);
-}
-
-addPassenger();
-
-function generateInvoice(){
-
-    document.getElementById("invoiceArea").style.display = "block";
-
-    document.getElementById("showDate").innerHTML =
-    "<strong>Date:</strong> " + document.getElementById("invoiceDate").value;
-
-    document.getElementById("showInvoiceNo").innerHTML =
-    "<strong>Invoice No:</strong> " + document.getElementById("invoiceNo").value;
-
-    document.getElementById("showClient").innerHTML =
-    "<strong>Name:</strong> " + document.getElementById("clientName").value;
-
-    document.getElementById("showCompany").innerHTML =
-    "<strong>Company:</strong> " + document.getElementById("companyName").value;
-
-    document.getElementById("showAddress").innerHTML =
-    "<strong>Address:</strong> " + document.getElementById("address").value;
-
-    const names = document.querySelectorAll(".name");
-    const tickets = document.querySelectorAll(".ticket");
-    const pnrs = document.querySelectorAll(".pnr");
-    const routes = document.querySelectorAll(".route");
-    const airlines = document.querySelectorAll(".airline");
-    const departures = document.querySelectorAll(".departure");
-    const amounts = document.querySelectorAll(".amount");
-
-    const tbody = document.getElementById("invoiceTableBody");
-
-    tbody.innerHTML = "";
-
-    let total = 0;
-
-    for(let i=0; i<names.length; i++){
-
-        let amount = Number(amounts[i].value || 0);
-
-        total += amount;
-
-        tbody.innerHTML += `
+    <!-- TABLE -->
+    <table class="inv-table">
+      <thead>
         <tr>
-        <td>${i+1}</td>
-        <td>${names[i].value}</td>
-        <td>${tickets[i].value}</td>
-        <td>${pnrs[i].value}</td>
-        <td>${routes[i].value}</td>
-        <td>${airlines[i].value}</td>
-        <td>${departures[i].value}</td>
-        <td>${amount.toLocaleString()}</td>
+          <th>#</th>
+          <th>Passenger Name</th>
+          <th>Ticket Number</th>
+          <th>PNR</th>
+          <th>Route</th>
+          <th>Airline</th>
+          <th>Departure Date</th>
+          <th>Amount (BDT)</th>
         </tr>
-        `;
-    }
+      </thead>
+      <tbody id="invoiceTableBody"></tbody>
+    </table>
 
-    document.getElementById("grandTotal").innerHTML =
-    "TOTAL : " + total.toLocaleString() + " BDT";
+    <!-- TOTALS -->
+    <div class="totals-wrap">
+      <div class="amount-words-row" id="amountInWordsWrap">
+        <strong>In Words:</strong> <span id="amountInWords"></span>
+      </div>
+      <div class="total-box">
+        <div class="total-label">Grand Total</div>
+        <div class="total-amount" id="grandTotal">—</div>
+      </div>
+    </div>
 
-    document.getElementById("amountInWords").innerText =
-    numberToWords(total) + " Taka Only";
+    <!-- BANK -->
+    <div class="bank-section">
+      <div class="bank-title">Payment — Bank Details</div>
+      <div class="bank-grid">
+        <div class="bank-box">
+          <div class="bank-name">BRAC BANK PLC</div>
+          <p>A/C Name: GO PLANE PRIVATE LIMITED</p>
+          <p>A/C No: 2074065900001</p>
+          <p>Branch: Mirpur Branch</p>
+          <p>Routing No: 60262983</p>
+        </div>
+        <div class="bank-box">
+          <div class="bank-name">DUTCH BANGLA BANK PLC</div>
+          <p>A/C Name: GO PLANE PRIVATE LIMITED</p>
+          <p>A/C No: 2111100360371</p>
+          <p>Branch: Pallabi Branch</p>
+          <p>Routing No: 90263581</p>
+        </div>
+        <div class="bank-box">
+          <div class="bank-name">MEGHNA BANK PLC</div>
+          <p>A/C Name: GO PLANE PRIVATE LIMITED</p>
+          <p>A/C No: 100711100000132</p>
+          <p>Branch: Agent Banking – Dhaka South</p>
+          <p>Routing No: 275270607</p>
+        </div>
+      </div>
+    </div>
 
-    window.scrollTo({
-        top: document.body.scrollHeight,
-        behavior:'smooth'
-    });
+    <!-- SIGNATURE -->
+    <div class="signature-row">
+      <div class="sig-block">
+        <div class="sig-line"></div>
+        <p>Received By</p>
+      </div>
+      <div class="sig-block">
+        <div class="sig-line"></div>
+        <p>Authorised Signature</p>
+      </div>
+    </div>
+
+    <!-- FOOTER -->
+    <div class="inv-footer">
+      <div class="inv-footer-left">
+        This invoice was computer-generated and is valid without a physical seal.<br>
+        For queries: info@goplane.com | +880 2226-623463
+      </div>
+      <div class="inv-footer-right">
+        THANK YOU FOR<br>CHOOSING GO PLANE
+      </div>
+    </div>
+
+  </div><!-- /inv-content -->
+
+  <button class="btn btn-print" onclick="window.print()">🖨 Print / Save as PDF</button>
+
+</div><!-- /invoice -->
+
+
+<script>
+/* ===== NUMBER TO WORDS (supports crore/lakh) ===== */
+function numberToWords(num) {
+  if (num === 0) return 'Zero';
+  num = Math.round(num);
+
+  const ones = ['','One','Two','Three','Four','Five','Six','Seven','Eight','Nine',
+    'Ten','Eleven','Twelve','Thirteen','Fourteen','Fifteen','Sixteen',
+    'Seventeen','Eighteen','Nineteen'];
+  const tens = ['','','Twenty','Thirty','Forty','Fifty','Sixty','Seventy','Eighty','Ninety'];
+
+  function convert(n) {
+    if (n === 0) return '';
+    if (n < 20) return ones[n] + ' ';
+    if (n < 100) return tens[Math.floor(n/10)] + (n%10 ? ' ' + ones[n%10] : '') + ' ';
+    return ones[Math.floor(n/100)] + ' Hundred ' + convert(n%100);
+  }
+
+  let result = '';
+  if (num >= 10000000) { result += convert(Math.floor(num/10000000)) + 'Crore '; num %= 10000000; }
+  if (num >= 100000)   { result += convert(Math.floor(num/100000))   + 'Lakh ';  num %= 100000; }
+  if (num >= 1000)     { result += convert(Math.floor(num/1000))     + 'Thousand '; num %= 1000; }
+  if (num > 0)         { result += convert(num); }
+
+  return result.trim();
 }
 
+/* ===== DATE FORMAT ===== */
+function fmtDate(d) {
+  if (!d) return '—';
+  const [y,m,day] = d.split('-');
+  const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  return `${parseInt(day)} ${months[parseInt(m)-1]} ${y}`;
+}
+
+/* ===== PASSENGERS ===== */
+let passengerCount = 0;
+
+function addPassenger() {
+  passengerCount++;
+  const id = `p${passengerCount}`;
+  const container = document.getElementById('passengerContainer');
+  const box = document.createElement('div');
+  box.classList.add('passenger-card');
+  box.id = id;
+  box.innerHTML = `
+    <div class="passenger-head">
+      <span>Passenger ${passengerCount}</span>
+      <button class="remove-btn" onclick="removePassenger('${id}')">✕ Remove</button>
+    </div>
+    <div class="passenger-body">
+      <div class="form-grid">
+        <div class="form-group"><label>Passenger Name</label><input type="text" class="p-name" placeholder="Full name as on passport"></div>
+        <div class="form-group"><label>Ticket Number</label><input type="text" class="p-ticket" placeholder="e.g. 157-4412345678"></div>
+        <div class="form-group"><label>PNR</label><input type="text" class="p-pnr" placeholder="e.g. ABC123"></div>
+        <div class="form-group"><label>Route</label><input type="text" class="p-route" placeholder="e.g. DAC → DXB → LHR"></div>
+        <div class="form-group"><label>Airline</label><input type="text" class="p-airline" placeholder="e.g. Emirates"></div>
+        <div class="form-group"><label>Departure Date</label><input type="date" class="p-departure"></div>
+        <div class="form-group"><label>Amount (BDT)</label><input type="number" class="p-amount" placeholder="0.00" min="0"></div>
+      </div>
+    </div>
+  `;
+  container.appendChild(box);
+}
+
+function removePassenger(id) {
+  const el = document.getElementById(id);
+  if (el) el.remove();
+}
+
+/* ===== GENERATE INVOICE ===== */
+function generateInvoice() {
+  const inv = document.getElementById('invoiceArea');
+  inv.style.display = 'block';
+
+  // Meta
+  document.getElementById('showDate').textContent    = fmtDate(document.getElementById('invoiceDate').value);
+  document.getElementById('showInvoiceNo').textContent = document.getElementById('invoiceNo').value || '—';
+
+  // Client
+  const client  = document.getElementById('clientName').value;
+  const company = document.getElementById('companyName').value;
+  const address = document.getElementById('address').value;
+  document.getElementById('showClient').innerHTML  = client  ? `<strong>Name:</strong> ${client}`   : '';
+  document.getElementById('showCompany').innerHTML = company ? `<strong>Company:</strong> ${company}` : '';
+  document.getElementById('showAddress').innerHTML = address ? `<strong>Address:</strong> ${address}` : '';
+
+  // Passengers
+  const cards  = document.querySelectorAll('.passenger-card');
+  const tbody  = document.getElementById('invoiceTableBody');
+  tbody.innerHTML = '';
+  let total = 0, sl = 0;
+
+  cards.forEach(card => {
+    const name     = card.querySelector('.p-name').value.trim();
+    const ticket   = card.querySelector('.p-ticket').value.trim();
+    const pnr      = card.querySelector('.p-pnr').value.trim();
+    const route    = card.querySelector('.p-route').value.trim();
+    const airline  = card.querySelector('.p-airline').value.trim();
+    const depDate  = card.querySelector('.p-departure').value;
+    const amount   = parseFloat(card.querySelector('.p-amount').value) || 0;
+
+    if (!name && !ticket && amount === 0) return; // skip truly blank rows
+    sl++;
+    total += amount;
+
+    tbody.innerHTML += `
+      <tr>
+        <td>${sl}</td>
+        <td>${name || '—'}</td>
+        <td style="font-family:'DM Mono',monospace;font-size:9.5px;">${ticket || '—'}</td>
+        <td style="font-family:'DM Mono',monospace;font-size:9.5px;">${pnr || '—'}</td>
+        <td>${route || '—'}</td>
+        <td>${airline || '—'}</td>
+        <td>${fmtDate(depDate)}</td>
+        <td>${total > 0 || amount > 0 ? amount.toLocaleString('en-BD') : '—'}</td>
+      </tr>
+    `;
+  });
+
+  // Totals
+  document.getElementById('grandTotal').textContent = total.toLocaleString('en-BD') + ' BDT';
+  document.getElementById('amountInWords').textContent = numberToWords(total) + ' Taka Only';
+
+  // Scroll
+  inv.scrollIntoView({ behavior:'smooth', block:'start' });
+}
+
+/* ===== INIT ===== */
+// set today's date
+document.getElementById('invoiceDate').valueAsDate = new Date();
+addPassenger();
 </script>
 
 </body>
