@@ -290,7 +290,7 @@ table.total-table td {
     border: 1px dashed #dbe4ff;
 }
 
-/* ================= FLIGHT DETAILS SECTION ================= */
+/* ================= FLIGHT & BAGGAGE STRUCTURAL AREA ================= */
 .flight-details-section {
     margin-top: 15px;
     position: relative;
@@ -304,19 +304,39 @@ table.total-table td {
 .flight-details-section h3 {
     color: #001ea8;
     font-size: 11px;
-    margin-bottom: 5px;
+    margin-bottom: 6px;
     font-weight: 700;
     border-bottom: 1px solid #f1f5f9;
     padding-bottom: 3px;
 }
 
-.flight-text {
+.flight-flex-layout {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+}
+
+.flight-text-pane {
+    flex: 2;
     font-family: "Courier New", Courier, monospace;
     font-size: 10px;
     color: #111827;
     white-space: pre-line;
     line-height: 1.6;
     font-weight: 600;
+}
+
+.baggage-display-pane {
+    flex: 1;
+    background: #fafcff;
+    border-left: 3px solid #001ea8;
+    padding: 4px 10px;
+    font-size: 10px;
+    line-height: 1.5;
+}
+
+.baggage-display-pane p {
+    margin-bottom: 3px;
 }
 
 /* ================= BANK DETAILS ================= */
@@ -470,10 +490,16 @@ table.total-table td {
             <textarea id="address" placeholder="Street Address, City, Country"></textarea>
         </div>
 
-        <!-- NEW MANUALLY INPUT FOR FLIGHT ROUTING AND BAGGAGE DETAILS -->
-        <div style="margin-bottom: 12px; background: #f0fdf4; padding: 12px; border-radius: 6px; border: 1px solid #bbf7d0;">
-            <label style="color: #166534;">Flight Routing & Baggage Details (Manual Input / GDS Paste)</label>
-            <textarea id="flightInput" style="height: 75px; font-family: monospace;" placeholder="ET 844 J 25JUN 4*CPTADD DK1  1350 2115  25JUN  E  0 789 (Baggage: 2 PCS)&#10;ET 680 J 25JUN 4*ADDDAC DK1  2320 0950  26JUN  E  0 787 (Baggage: 2 PCS)"></textarea>
+        <!-- SPLIT INTERFACE FOR FLIGHT DETAILS & MANUAL BAGGAGE DATA -->
+        <div class="form-grid" style="margin-bottom: 12px; background: #f0fdf4; padding: 12px; border-radius: 6px; border: 1px solid #bbf7d0;">
+            <div>
+                <label style="color: #166534;">Flight Routing Details (Manual Entry / GDS Paste)</label>
+                <textarea id="flightInput" style="height: 75px; font-family: monospace;" placeholder="ET 844 J 25JUN 4*CPTADD DK1  1350 2115  25JUN  E  0 789&#10;ET 680 J 25JUN 4*ADDDAC DK1  2320 0950  26JUN  E  0 787"></textarea>
+            </div>
+            <div>
+                <label style="color: #166534;">Baggage Details (Manual Entry: e.g. 1PCS, 2PCS, 23KG, 40KG)</label>
+                <textarea id="baggageInput" style="height: 75px;" placeholder="Sector 1: 2 PCS / 23 KG&#10;Sector 2: 1 PC / 30 KG"></textarea>
+            </div>
         </div>
 
         <div class="form-grid" style="margin-bottom: 12px; background: #fffbeb; padding: 10px; border-radius: 6px; border: 1px solid #fef3c7;">
@@ -493,8 +519,8 @@ table.total-table td {
         </div>
 
         <div style="margin-bottom: 12px;">
-            <label>Additional Terms / Note Block (Appears at bottom)</label>
-            <textarea id="notesInput" placeholder="Enter special structural remarks or standard declarations..."></textarea>
+            <label>Additional Notes Remarks Block (Appears at bottom)</label>
+            <textarea id="notesInput" placeholder="Enter custom contract stipulations or payment terms restrictions..."></textarea>
         </div>
 
         <div id="passengerContainer"></div>
@@ -585,10 +611,13 @@ table.total-table td {
             </div>
         </div>
 
-        <!-- FLIGHT ROUTING & BAGGAGE STRUCTURAL BOX (BEFORE BANKS) -->
+        <!-- FLIGHT ROUTING & BAGGAGE STRUCTURAL BOX (COMPACT DUAL PANE) -->
         <div class="flight-details-section" id="flightDetailsBlock" style="display: none;">
             <h3>Flight Schedule & Baggage Specifications</h3>
-            <div class="flight-text" id="showFlightDetails"></div>
+            <div class="flight-flex-layout">
+                <div class="flight-text-pane" id="showFlightDetails"></div>
+                <div class="baggage-display-pane" id="showBaggageDetails"></div>
+            </div>
         </div>
 
         <!-- REMITTANCE BANK CLEARING SYSTEM -->
@@ -616,7 +645,7 @@ table.total-table td {
             </div>
         </div>
 
-        <!-- ADDITIONAL NOTES SECTION (AFTER BANKS) -->
+        <!-- ADDITIONAL NOTES SECTION -->
         <div class="notes-section" id="notesBlock" style="display: none;">
             <h3>Additional System Notes & Declarations</h3>
             <div class="notes-content" id="showNotesDetails"></div>
@@ -729,30 +758,33 @@ function generateDocument(){
     const rate = parseFloat(document.getElementById("exchangeRate").value) || 118.50;
     const symbol = getCurrencySymbol(altCode);
 
-    // Apply Structural Heading changes
+    // Headings Configuration
     document.getElementById("documentHeading").innerText = docType;
     document.getElementById("watermarkText").innerText = "GO PLANE " + docType;
     document.getElementById("thAltHeader").innerText = `Fare (${altCode})`;
     document.getElementById("rateNote").innerText = `Book Rate Parity: 1 ${altCode} = ${rate.toFixed(2)} BDT`;
 
-    // Process Basic Fields
+    // Basic Fields Mapping
     document.getElementById("showDate").innerHTML = "<strong>Date:</strong> " + document.getElementById("invoiceDate").value;
     document.getElementById("showInvoiceNo").innerHTML = `<strong>${docType === "INVOICE" ? "Invoice" : "Quotation"} No:</strong> ` + document.getElementById("invoiceNo").value;
     document.getElementById("showClient").innerHTML = "<strong>Attn:</strong> " + document.getElementById("clientName").value;
     document.getElementById("showCompany").innerHTML = "<strong>Company:</strong> " + document.getElementById("companyName").value;
     document.getElementById("showAddress").innerHTML = "<strong>Address:</strong> " + document.getElementById("address").value;
 
-    // Process Flight Routing & Baggage Conditions
+    // Flight Routing & Baggage Management
     const flightData = document.getElementById("flightInput").value;
+    const baggageData = document.getElementById("baggageInput").value;
     const flightBlock = document.getElementById("flightDetailsBlock");
-    if(flightData.trim() !== "") {
+    
+    if(flightData.trim() !== "" || baggageData.trim() !== "") {
         flightBlock.style.display = "block";
-        document.getElementById("showFlightDetails").innerText = flightData;
+        document.getElementById("showFlightDetails").innerText = flightData ? flightData : "N/A";
+        document.getElementById("showBaggageDetails").innerHTML = baggageData ? `<strong>Baggage Rules:</strong><br>${baggageData.replace(/\n/g, '<br>')}` : "N/A";
     } else {
         flightBlock.style.display = "none";
     }
 
-    // Process Custom Additional System Notes
+    // Additional Notes Parsing
     const notesData = document.getElementById("notesInput").value;
     const notesBlock = document.getElementById("notesBlock");
     if(notesData.trim() !== "") {
@@ -762,13 +794,13 @@ function generateDocument(){
         notesBlock.style.display = "none";
     }
 
-    // Process Workflow Names from Select Dropdown Box
+    // Human Resource Dynamic Dropdowns
     const preparedBy = document.getElementById("preparedByName").value;
     const receivedBy = document.getElementById("receivedByName").value || "Client Signatory";
     document.getElementById("outPreparedName").innerText = preparedBy;
     document.getElementById("outReceivedName").innerText = receivedBy;
 
-    // Compile Table Data List Rows
+    // Build Table Rows
     const names = document.querySelectorAll(".name");
     const tickets = document.querySelectorAll(".ticket");
     const routes = document.querySelectorAll(".route");
@@ -801,15 +833,15 @@ function generateDocument(){
 
     let totalAlt = totalBDT / rate;
 
-    // Inject Isolated Summary Table Values
+    // Inject Ledger Summary
     document.getElementById("tdTotalBDT").innerText = totalBDT.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}) + " ৳";
     document.getElementById("tdTotalAlt").innerText = symbol + " " + totalAlt.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}) + " " + altCode;
 
-    // Set Words Outputs
+    // Map Wordings
     document.getElementById("wordsBDT").innerText = numberToWords(Math.floor(totalBDT)) + " Taka Only";
     document.getElementById("wordsAlt").innerText = numberToWords(Math.floor(totalAlt)) + " " + getCurrencyString(altCode) + " Only";
 
-    // Unhide Layout Output Screen Area smoothly
+    // View Layer Presentation Trigger
     document.getElementById("invoiceArea").style.display = "block";
     window.scrollTo({ top: document.getElementById("invoiceArea").offsetTop, behavior: 'smooth' });
 }
