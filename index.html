@@ -524,6 +524,28 @@ table td{
     <option value="QUOTATION">Quotation</option>
 </select>
 </div>
+
+<div>
+<label>Currency Setup</label>
+<select id="currencyType" onchange="toggleCustomCurrency()">
+    <option value="BDT">BDT (৳) - Bangladeshi Taka</option>
+    <option value="USD">USD ($) - US Dollar</option>
+    <option value="EUR">EUR (€) - Euro</option>
+    <option value="GBP">GBP (£) - British Pound</option>
+    <option value="CUSTOM">Custom Currency...</option>
+</select>
+</div>
+</div>
+
+<div class="form-grid" id="customCurrencyWrapper" style="display:none; margin-bottom: 15px;">
+<div>
+<label>Custom Currency Code (e.g. CAD, AED)</label>
+<input type="text" id="customCode" placeholder="CAD">
+</div>
+<div>
+<label>Custom Currency Word Ending</label>
+<input type="text" id="customWord" placeholder="Dollars">
+</div>
 </div>
 
 <div class="form-grid">
@@ -650,7 +672,7 @@ Website: www.goplane.com
 <th>Route</th>
 <th>Airline</th>
 <th>Departure Date</th>
-<th>Amount ( In BDT )</th>
+<th id="tableAmountHeader">Amount ( In BDT )</th>
 </tr>
 
 </thead>
@@ -779,6 +801,16 @@ function numberToWords(num){
     return result.trim();
 }
 
+function toggleCustomCurrency() {
+    const currencyType = document.getElementById("currencyType").value;
+    const wrapper = document.getElementById("customCurrencyWrapper");
+    if(currencyType === "CUSTOM") {
+        wrapper.style.display = "grid";
+    } else {
+        wrapper.style.display = "none";
+    }
+}
+
 
 /* ================= PASSENGER ================= */
 
@@ -825,7 +857,7 @@ function addPassenger(){
     </div>
 
     <div>
-    <label>Amount (BDT)</label>
+    <label>Amount</label>
     <input type="number" class="amount">
     </div>
 
@@ -843,8 +875,30 @@ addPassenger();
 function generateInvoice(){
 
     const docType = document.getElementById("documentType").value;
+    const currencyType = document.getElementById("currencyType").value;
+    
+    let currencyCode = "BDT";
+    let currencyWord = "Taka Only";
+    
+    if(currencyType === "BDT") {
+        currencyCode = "BDT";
+        currencyWord = "Taka Only";
+    } else if(currencyType === "USD") {
+        currencyCode = "USD";
+        currencyWord = "Dollars Only";
+    } else if(currencyType === "EUR") {
+        currencyCode = "EUR";
+        currencyWord = "Euros Only";
+    } else if(currencyType === "GBP") {
+        currencyCode = "GBP";
+        currencyWord = "Pounds Only";
+    } else if(currencyType === "CUSTOM") {
+        currencyCode = document.getElementById("customCode").value.toUpperCase() || "CURR";
+        currencyWord = document.getElementById("customWord").value || "Only";
+    }
 
-    // Apply names changes based on Document Selection
+    // Dynamic setups
+    document.getElementById("tableAmountHeader").innerText = `Amount ( In ${currencyCode} )`;
     document.getElementById("documentHeading").innerText = docType;
     document.getElementById("watermarkText").innerText = "GO PLANE " + docType;
     document.getElementById("footerText").innerText = "THANK YOU FOR CHOOSING GO PLANE PRIVATE LIMITED";
@@ -900,12 +954,12 @@ function generateInvoice(){
     }
 
     document.getElementById("grandTotal").innerHTML =
-    "TOTAL : " + total.toLocaleString() + " BDT";
+    "TOTAL : " + total.toLocaleString() + " " + currencyCode;
 
     const wordsBox = document.getElementById("amountInWords");
 
     if(wordsBox){
-        wordsBox.innerText = numberToWords(total) + " Taka Only";
+        wordsBox.innerText = numberToWords(total) + " " + currencyWord;
     }
 
     window.scrollTo({
