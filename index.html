@@ -3,847 +3,1145 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GO PLANE PRIVATE LIMITED - Professional Document System</title>
-
+<title>GO PLANE PRIVATE LIMITED — Document System</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Syne:wght@600;700;800&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
-@page {
-    size: A4;
-    margin: 8mm 10mm;
+:root {
+    --ink: #0a0e1a;
+    --blue: #001ea8;
+    --blue-lt: #eef2ff;
+    --gold: #d4a012;
+    --gold-lt: #fffbeb;
+    --gray: #6b7280;
+    --border: #e0e5f0;
+    --bg: #f4f6fb;
+    --white: #ffffff;
+    --red: #c0392b;
+    --mono: 'DM Mono', monospace;
+    --sans: 'IBM Plex Sans', sans-serif;
+    --display: 'Syne', sans-serif;
 }
 
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: "Segoe UI", Arial, sans-serif;
-}
+@page { size: A4; margin: 7mm 9mm; }
+
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
 
 body {
-    background: linear-gradient(135deg, rgba(255,255,255,0.98), rgba(255,255,255,0.98)), #eef2ff;
-    padding: 15px;
-    color: #111827;
+    font-family: var(--sans);
+    background: var(--bg);
+    color: var(--ink);
     font-size: 11px;
+    padding: 16px;
 }
 
-.container {
-    max-width: 1100px;
-    margin: auto;
-}
-
-/* ================= CONTROL INTERFACE ================= */
-.form-section {
-    background: #fff;
-    padding: 20px;
-    border-radius: 8px;
+/* ══════════════ CONTROL PANEL ══════════════ */
+.panel {
+    background: var(--white);
+    border-radius: 10px;
+    padding: 22px 24px;
     margin-bottom: 20px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+    box-shadow: 0 2px 16px rgba(0,30,168,0.07);
+    border: 1px solid var(--border);
 }
 
-.form-section h1 {
-    font-size: 20px;
-    color: #001ea8;
-    margin-bottom: 15px;
+.panel-head {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 18px;
+    padding-bottom: 10px;
+    border-bottom: 1.5px solid var(--blue-lt);
+}
+
+.panel-head h1 {
+    font-family: var(--display);
+    font-size: 15px;
+    color: var(--blue);
     font-weight: 800;
-    border-bottom: 2px solid #eef2ff;
-    padding-bottom: 8px;
+    letter-spacing: -0.3px;
 }
 
-.form-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 12px;
+.panel-head .badge {
+    background: var(--blue);
+    color: #fff;
+    font-family: var(--mono);
+    font-size: 9px;
+    padding: 2px 7px;
+    border-radius: 20px;
+    letter-spacing: 0.5px;
 }
 
-label {
+.grid { display: grid; gap: 10px; }
+.g2 { grid-template-columns: 1fr 1fr; }
+.g3 { grid-template-columns: 1fr 1fr 1fr; }
+.g4 { grid-template-columns: repeat(4, 1fr); }
+.g22 { grid-template-columns: 2fr 1fr; }
+
+.field label {
     display: block;
+    font-family: var(--mono);
+    font-size: 9.5px;
+    font-weight: 500;
+    color: var(--gray);
     margin-bottom: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+}
+
+.field input, .field select, .field textarea {
+    width: 100%;
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    padding: 7px 9px;
+    font-size: 11px;
+    font-family: var(--sans);
+    color: var(--ink);
+    background: #fafbff;
+    transition: border 0.15s, box-shadow 0.15s;
+}
+
+.field input:focus, .field select:focus, .field textarea:focus {
+    border-color: var(--blue);
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(0,30,168,0.08);
+    background: #fff;
+}
+
+.field textarea { resize: vertical; min-height: 48px; }
+
+.section-label {
+    font-family: var(--display);
     font-size: 11px;
     font-weight: 700;
-    color: #374151;
+    color: var(--blue);
+    margin: 14px 0 8px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
 }
 
-input, select, textarea {
-    width: 100%;
-    border: 1px solid #dbe4ff;
-    padding: 8px 10px;
-    border-radius: 5px;
-    font-size: 11px;
-    background: #fff;
-    color: #111827;
+.section-label::before {
+    content: '';
+    display: block;
+    width: 3px;
+    height: 12px;
+    background: var(--gold);
+    border-radius: 2px;
 }
 
-input:focus, select:focus, textarea:focus {
-    border-color: #001ea8;
-    outline: none;
-    box-shadow: 0 0 0 3px rgba(0,30,168,0.06);
-}
-
-textarea {
-    resize: vertical;
-    height: 50px;
-}
-
-.passenger-box {
-    margin-top: 12px;
+.zone {
     padding: 12px;
-    border-radius: 6px;
-    border: 1px solid #dbe4ff;
-    background: #fafcff;
+    border-radius: 7px;
+    border: 1px dashed;
 }
 
-.passenger-box h3 {
-    font-size: 12px;
-    color: #001ea8;
+.zone-green { border-color: #86efac; background: #f0fdf4; }
+.zone-amber { border-color: #fcd34d; background: #fffbeb; }
+.zone-blue  { border-color: #a5b4fc; background: #eef2ff; }
+
+.pax-box {
+    border: 1px solid var(--border);
+    border-radius: 7px;
+    padding: 12px;
+    margin-top: 10px;
+    background: #fafbff;
+    position: relative;
+}
+
+.pax-box .pax-head {
+    font-family: var(--display);
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--blue);
     margin-bottom: 8px;
-    border-bottom: 1px dashed #dbe4ff;
-    padding-bottom: 4px;
+    padding-bottom: 5px;
+    border-bottom: 1px dashed var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.del-btn {
+    background: #fee2e2;
+    color: #dc2626;
+    border: none;
+    padding: 2px 8px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 10px;
+    font-family: var(--mono);
 }
 
 .btn {
     border: none;
     padding: 8px 16px;
-    border-radius: 5px;
+    border-radius: 6px;
     cursor: pointer;
+    font-family: var(--display);
     font-size: 11px;
     font-weight: 700;
-    margin-top: 12px;
-    transition: 0.2s;
+    transition: all 0.18s;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
 }
 
-.btn:hover { transform: translateY(-1px); }
-.add-btn { background: #001ea8; color: #fff; margin-right: 5px;}
-.generate-btn { background: #f4b400; color: #111827; }
-.print-btn { background: #001ea8; color: #fff; margin-top: 15px; width: 100%; padding: 10px; font-size: 12px;}
+.btn:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+.btn-blue { background: var(--blue); color: #fff; }
+.btn-gold { background: var(--gold); color: #fff; }
+.btn-outline { background: transparent; border: 1.5px solid var(--border); color: var(--gray); }
 
-/* ================= COMPACT PRINT LAYOUT ================= */
+.actions {
+    display: flex;
+    gap: 8px;
+    margin-top: 14px;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+/* ══════════════ PRINT CONTROLS ══════════════ */
+.print-controls {
+    background: var(--white);
+    border: 1.5px solid var(--blue-lt);
+    border-radius: 8px;
+    padding: 14px 18px;
+    margin-bottom: 14px;
+    display: none;
+}
+
+.print-controls h3 {
+    font-family: var(--display);
+    font-size: 12px;
+    color: var(--blue);
+    margin-bottom: 10px;
+    font-weight: 700;
+}
+
+.toggle-group {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.toggle-btn {
+    border: 1.5px solid var(--border);
+    background: #f8faff;
+    color: var(--gray);
+    border-radius: 6px;
+    padding: 6px 14px;
+    font-family: var(--mono);
+    font-size: 10px;
+    cursor: pointer;
+    transition: all 0.15s;
+    font-weight: 500;
+}
+
+.toggle-btn.active {
+    background: var(--blue);
+    color: #fff;
+    border-color: var(--blue);
+}
+
+.print-trigger {
+    background: var(--blue);
+    color: #fff;
+    border: none;
+    padding: 8px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-family: var(--display);
+    font-size: 11px;
+    font-weight: 700;
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.print-trigger:hover { background: #001480; }
+
+/* ══════════════ INVOICE DOCUMENT ══════════════ */
 .invoice {
     width: 210mm;
-    min-height: 280mm;
-    background: #fff;
+    min-height: 285mm;
+    background: var(--white);
     margin: auto;
-    padding: 12mm 15mm;
+    padding: 10mm 12mm 8mm;
     position: relative;
-    overflow: hidden;
     display: none;
-    box-shadow: 0 0 15px rgba(0,0,0,0.05);
+    font-family: var(--sans);
+    font-size: 9px;
+    line-height: 1.45;
 }
 
 .watermark {
     position: absolute;
-    top: 52%;
+    top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%) rotate(-25deg);
-    font-size: 45px;
+    transform: translate(-50%, -50%) rotate(-28deg);
+    font-family: var(--display);
+    font-size: 52px;
     font-weight: 900;
-    color: rgba(0, 30, 168, 0.04);
+    color: rgba(0,30,168,0.028);
     z-index: 0;
     pointer-events: none;
-    text-align: center;
     white-space: nowrap;
+    letter-spacing: -1px;
 }
 
-.header {
+/* HEADER */
+.inv-header {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
-    padding-bottom: 10px;
-    border-bottom: 2.5px solid #f4b400;
+    padding-bottom: 8px;
+    border-bottom: 2px solid var(--gold);
     position: relative;
     z-index: 2;
+    margin-bottom: 10px;
 }
 
-.company { display: flex; gap: 12px; }
-.logo { width: 85px; height: auto; object-fit: contain; }
+.inv-brand { display: flex; align-items: flex-start; gap: 10px; }
+.inv-logo { width: 72px; height: auto; object-fit: contain; }
 
-.company-details h1 {
-    font-size: 16px;
-    color: #001ea8;
-    font-weight: 900;
-    margin-bottom: 3px;
+.inv-company-name {
+    font-family: var(--display);
+    font-size: 13.5px;
+    color: var(--blue);
+    font-weight: 800;
     letter-spacing: -0.3px;
+    margin-bottom: 2px;
 }
 
-.company-details p {
-    font-size: 9px;
-    color: #4b5563;
-    font-weight: 600;
-    line-height: 1.5;
+.inv-company-sub {
+    font-family: var(--sans);
+    font-size: 7.5px;
+    color: var(--gray);
+    line-height: 1.55;
 }
 
-.invoice-title { text-align: right; }
-.invoice-title h2 {
-    font-size: 18px;
-    color: #001ea8;
-    font-weight: 900;
-    margin-bottom: 6px;
-}
-.invoice-title p { font-size: 10px; margin-bottom: 3px; color: #374151;}
+.inv-title-block { text-align: right; }
 
-.billing {
+.inv-type-label {
+    font-family: var(--display);
+    font-size: 20px;
+    color: var(--blue);
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    line-height: 1;
+    margin-bottom: 5px;
+}
+
+.inv-meta {
+    font-family: var(--mono);
+    font-size: 8px;
+    color: var(--gray);
+    line-height: 1.7;
+}
+
+.inv-meta strong { color: var(--ink); font-weight: 500; }
+
+/* BILLING */
+.billing-row {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 12px;
-    margin-top: 15px;
+    gap: 10px;
+    margin-bottom: 10px;
     position: relative;
     z-index: 2;
 }
 
-.bill-box {
-    width: 100%;
-    border: 1px solid #e5e7eb;
-    border-radius: 6px;
-    padding: 10px 12px;
-    background: #fff;
-    font-size: 9.5px;
-    line-height: 1.5;
+.bill-card {
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    padding: 8px 10px;
+    font-size: 8px;
+    line-height: 1.6;
 }
 
-.bill-box h3 {
-    font-size: 11px;
-    color: #001ea8;
-    margin-bottom: 4px;
+.bill-card-title {
+    font-family: var(--display);
+    font-size: 9px;
+    color: var(--blue);
     font-weight: 700;
+    margin-bottom: 4px;
+    padding-bottom: 3px;
+    border-bottom: 1px solid var(--blue-lt);
 }
 
-/* ================= STREAMLINED DATA TABLE ================= */
-table.data-table {
+.bill-card strong { color: var(--ink); font-weight: 600; }
+
+/* TABLE */
+.inv-table {
     width: 100%;
     border-collapse: collapse;
-    margin-top: 15px;
     position: relative;
     z-index: 2;
+    margin-bottom: 8px;
 }
 
-table.data-table th {
-    background: #001ea8;
+.inv-table thead tr th {
+    background: var(--blue);
     color: #fff;
-    padding: 6px 8px;
-    font-size: 10px;
+    font-family: var(--display);
+    font-size: 7.8px;
     font-weight: 700;
-    border-bottom: 2px solid #f4b400;
+    padding: 5px 6px;
     text-align: left;
+    border-bottom: 2px solid var(--gold);
+    letter-spacing: 0.2px;
 }
 
-table.data-table td {
-    border: 1px solid #e5e7eb;
-    padding: 6px 8px;
-    font-size: 9.5px;
+.inv-table tbody tr td {
+    border: 1px solid #e8ecf5;
+    padding: 5px 6px;
+    font-size: 8px;
     vertical-align: middle;
-    color: #111827;
+    color: var(--ink);
 }
 
-.num-col { text-align: right; font-weight: 600; }
+.inv-table tbody tr:nth-child(even) td { background: #fafbff; }
 
-/* ================= INDEPENDENT TOTALS TABLE ================= */
-.summary-container {
+.td-name {
+    font-family: var(--display);
+    font-size: 8px;
+    color: var(--blue);
+    font-weight: 700;
+}
+
+.td-ticket {
+    font-family: var(--mono);
+    font-size: 7.5px;
+    letter-spacing: 0.2px;
+}
+
+.td-amt {
+    text-align: right;
+    font-family: var(--mono);
+    font-size: 8px;
+    font-weight: 500;
+}
+
+.td-bdt { color: var(--blue); font-weight: 600; }
+.td-alt { color: #92400e; }
+
+/* SERVICE CHARGE ROW */
+.svc-row td {
+    background: #fffbeb !important;
+    font-style: italic;
+}
+
+.svc-label { color: var(--gray); font-size: 7.5px; }
+
+/* TOTALS */
+.totals-area {
     display: flex;
     justify-content: flex-end;
-    margin-top: 10px;
     position: relative;
     z-index: 2;
+    margin-bottom: 8px;
 }
 
-table.total-table {
-    width: 50%;
+.totals-table {
     border-collapse: collapse;
+    min-width: 200px;
 }
 
-table.total-table th {
-    background: #f1f5f9;
-    color: #001ea8;
-    font-size: 10px;
+.totals-table th {
+    background: #f1f5fb;
+    color: var(--blue);
+    font-family: var(--display);
+    font-size: 7.8px;
     font-weight: 700;
-    padding: 6px 8px;
-    border: 1px solid #cbd5e1;
+    padding: 5px 8px;
+    border: 1px solid #d0d9ee;
     text-align: center;
+    letter-spacing: 0.2px;
 }
 
-table.total-table td {
-    padding: 8px;
-    font-size: 11px;
-    font-weight: 700;
-    border: 1px solid #cbd5e1;
+.totals-table td {
+    font-family: var(--mono);
+    font-size: 9.5px;
+    font-weight: 600;
+    padding: 6px 9px;
+    border: 1px solid #d0d9ee;
     text-align: right;
 }
 
-.bg-bdt { background: #eef2ff; color: #001ea8; }
-.bg-alt { background: #fffbeb; color: #b45309; }
+.td-total-bdt { background: var(--blue-lt); color: var(--blue); }
+.td-total-alt { background: var(--gold-lt); color: #7c5a00; }
 
-.meta-block {
-    margin-top: 12px;
+.words-rate-row {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
     position: relative;
     z-index: 2;
-    font-size: 9.5px;
+    margin-bottom: 10px;
+    gap: 10px;
 }
 
-.words-section { max-width: 65%; line-height: 1.5; color: #374151; }
-.rate-section { 
-    text-align: right; 
-    font-style: italic; 
-    color: #4b5563; 
-    background: #f9fafb;
-    padding: 5px 10px;
-    border-radius: 4px;
-    border: 1px dashed #dbe4ff;
-}
-
-/* ================= FLIGHT & BAGGAGE STRUCTURAL AREA ================= */
-.flight-details-section {
-    margin-top: 15px;
-    position: relative;
-    z-index: 2;
-    border: 1px solid #e5e7eb;
-    border-radius: 6px;
-    background: #fff;
-    padding: 10px;
-}
-
-.flight-details-section h3 {
-    color: #001ea8;
-    font-size: 11px;
-    margin-bottom: 6px;
-    font-weight: 700;
-    border-bottom: 1px solid #f1f5f9;
-    padding-bottom: 3px;
-}
-
-.flight-flex-layout {
-    display: flex;
-    justify-content: space-between;
-    gap: 15px;
-}
-
-.flight-text-pane {
-    flex: 2;
-    font-family: "Courier New", Courier, monospace;
-    font-size: 10px;
-    color: #111827;
-    white-space: pre-line;
-    line-height: 1.6;
-    font-weight: 600;
-}
-
-.baggage-display-pane {
+.words-block {
+    font-size: 7.5px;
+    color: var(--gray);
+    line-height: 1.7;
     flex: 1;
-    background: #fafcff;
-    border-left: 3px solid #001ea8;
-    padding: 4px 10px;
-    font-size: 10px;
-    line-height: 1.5;
 }
 
-.baggage-display-pane p {
-    margin-bottom: 3px;
+.words-block strong { color: var(--ink); font-family: var(--mono); font-size: 7.5px; }
+
+.rate-tag {
+    font-family: var(--mono);
+    font-size: 7.5px;
+    color: var(--blue);
+    background: var(--blue-lt);
+    padding: 4px 9px;
+    border-radius: 4px;
+    border: 1px solid #c7d2fe;
+    white-space: nowrap;
+    align-self: flex-start;
 }
 
-/* ================= BANK DETAILS ================= */
-.bank-section {
-    margin-top: 15px;
+/* FLIGHT SECTION */
+.flight-section {
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    padding: 8px;
+    margin-bottom: 8px;
     position: relative;
     z-index: 2;
+    background: #fff;
 }
 
-.bank-section h3 {
-    color: #001ea8;
-    font-size: 11px;
-    margin-bottom: 6px;
+.section-title {
+    font-family: var(--display);
+    font-size: 9px;
+    color: var(--blue);
     font-weight: 700;
+    margin-bottom: 5px;
+    padding-bottom: 3px;
+    border-bottom: 1px solid var(--blue-lt);
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.section-title::before {
+    content: '';
+    width: 3px;
+    height: 9px;
+    background: var(--gold);
+    border-radius: 2px;
+    display: block;
+}
+
+.flight-panes {
+    display: flex;
+    gap: 10px;
+}
+
+.flight-pane-text {
+    flex: 2;
+    font-family: var(--mono);
+    font-size: 7.5px;
+    color: var(--ink);
+    white-space: pre-line;
+    line-height: 1.65;
+    font-weight: 500;
+}
+
+.baggage-pane {
+    flex: 1;
+    background: #f8faff;
+    border-left: 2.5px solid var(--blue);
+    padding: 4px 8px;
+    font-size: 7.5px;
+    line-height: 1.6;
+    color: var(--gray);
+}
+
+.baggage-pane strong { color: var(--blue); font-family: var(--display); font-size: 8px; }
+
+/* BANK */
+.bank-section {
+    margin-bottom: 8px;
+    position: relative;
+    z-index: 2;
 }
 
 .bank-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 10px;
+    gap: 8px;
+    margin-top: 5px;
 }
 
-.bank-box {
+.bank-card {
     background: #fff;
-    border: 1px solid #e5e7eb;
-    border-radius: 6px;
-    padding: 8px 10px;
-    font-size: 9px;
-    line-height: 1.5;
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    padding: 6px 8px;
+    font-size: 7.2px;
+    line-height: 1.6;
+    color: var(--gray);
 }
 
-.bank-box strong { color: #001ea8; font-size: 9.5px; }
+.bank-card strong { color: var(--blue); font-size: 7.8px; font-family: var(--display); font-weight: 700; display: block; margin-bottom: 1px; }
 
-/* ================= ADITIONAL NOTES SECTION ================= */
+/* NOTES */
 .notes-section {
-    margin-top: 15px;
+    border-top: 1px dashed #d0d9ee;
+    padding-top: 6px;
+    margin-bottom: 8px;
     position: relative;
     z-index: 2;
-    border-top: 1px dashed #cbd5e1;
-    padding-top: 8px;
 }
 
-.notes-section h3 {
-    color: #374151;
-    font-size: 10.5px;
-    margin-bottom: 4px;
-    font-weight: 700;
-}
+.notes-content { font-size: 7.5px; color: var(--gray); line-height: 1.6; }
 
-.notes-content {
-    font-size: 9.5px;
-    color: #4b5563;
-    line-height: 1.5;
-}
-
-/* ================= SIGNATURE & FOOTER ================= */
-.signature {
-    margin-top: 40px;
+/* SIGNATURE */
+.signature-row {
     display: flex;
     justify-content: space-between;
+    margin-top: 28px;
     position: relative;
     z-index: 2;
 }
 
-.sig-holder {
+.sig-block {
+    width: 160px;
     text-align: center;
-    width: 200px;
 }
 
-.sig-holder p:first-child { color: #9ca3af; margin-bottom: 2px; }
-.sig-holder .line { border-top: 1px solid #cbd5e1; margin-bottom: 4px; }
-.sig-holder .title { font-size: 10px; color: #001ea8; font-weight: 700; }
-.sig-holder .name-output { font-size: 9.5px; color: #4b5563; font-weight: 600; }
-
-.footer {
-    margin-top: 20px;
-    padding-top: 10px;
-    border-top: 1px solid #e5e7eb;
-    text-align: center;
-    color: #9ca3af;
-    font-size: 9px;
+.sig-name {
+    font-family: var(--display);
+    font-size: 8px;
+    color: var(--gray);
+    margin-bottom: 2px;
     font-weight: 600;
-    letter-spacing: 0.5px;
+}
+
+.sig-line {
+    border-top: 1px solid #cbd5e1;
+    margin-bottom: 3px;
+}
+
+.sig-role {
+    font-family: var(--mono);
+    font-size: 7.5px;
+    color: var(--blue);
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+}
+
+.inv-footer {
+    margin-top: 16px;
+    padding-top: 7px;
+    border-top: 1px solid var(--border);
+    text-align: center;
+    font-family: var(--mono);
+    font-size: 7px;
+    color: #9ca3af;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
     position: relative;
     z-index: 2;
 }
 
-/* ================= MEDIA RESPONSES / PRINTS ================= */
+/* ══════════════ CURRENCY VISIBILITY STATES ══════════════ */
+body.hide-bdt .col-bdt,
+body.hide-bdt #tdTotalBDT,
+body.hide-bdt #thBDT,
+body.hide-bdt .words-bdt,
+body.hide-bdt .td-bdt { display: none !important; }
+
+body.hide-alt .col-alt,
+body.hide-alt #tdTotalAlt,
+body.hide-alt #thALT,
+body.hide-alt .words-alt,
+body.hide-alt .td-alt { display: none !important; }
+
+/* ══════════════ PRINT MEDIA ══════════════ */
 @media print {
     body { background: #fff; padding: 0; }
-    .form-section, .print-btn { display: none; }
+    .panel, .print-controls { display: none !important; }
     .invoice { display: block !important; width: 100%; min-height: auto; box-shadow: none; padding: 0; }
-    .bank-grid { display: grid !important; grid-template-columns: repeat(3, 1fr) !important; gap: 8px !important; }
-    table.total-table { width: 45% !important; }
+    .bank-grid { grid-template-columns: repeat(3, 1fr) !important; }
     * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
 }
 </style>
 </head>
 <body>
 
-<div class="container">
+<div style="max-width: 1120px; margin: auto;">
 
-    <!-- ================= CONTROL PANEL INTERFACE ================= -->
-    <div class="form-section">
-        <h1>GO PLANE PRIVATE LIMITED - Core Configuration</h1>
-        
-        <div class="form-grid" style="margin-bottom: 12px;">
-            <div>
-                <label>Document Class</label>
-                <select id="documentType">
-                    <option value="INVOICE">Commercial Invoice</option>
-                    <option value="QUOTATION">Price Quotation</option>
-                </select>
-            </div>
-            <div>
-                <label>Secondary Currency Format</label>
-                <select id="altCurrency" onchange="updateAltLabels()">
-                    <option value="USD">USD ($) - US Dollar</option>
-                    <option value="EUR">EUR (€) - Euro</option>
-                    <option value="GBP">GBP (£) - British Pound</option>
-                    <option value="AED">AED (د.إ) - UAE Dirham</option>
-                </select>
-            </div>
-            <div>
-                <label>Conversion Value Parity (1 Foreign Currency to BDT)</label>
-                <input type="number" id="exchangeRate" value="118.50" step="0.01">
-            </div>
-        </div>
-
-        <div class="form-grid" style="margin-bottom: 12px;">
-            <div>
-                <label>Document Date</label>
-                <input type="date" id="invoiceDate">
-            </div>
-            <div>
-                <label>Reference Tracking No.</label>
-                <input type="text" id="invoiceNo" placeholder="GP-2026-001">
-            </div>
-            <div>
-                <label>Client Reference Person</label>
-                <input type="text" id="clientName" placeholder="John Doe">
-            </div>
-            <div>
-                <label>Corporate Account Name</label>
-                <input type="text" id="companyName" placeholder="ABC Corporate Ltd.">
-            </div>
-        </div>
-
-        <div style="margin-bottom: 12px;">
-            <label>Billing Destination Address</label>
-            <textarea id="address" placeholder="Street Address, City, Country"></textarea>
-        </div>
-
-        <!-- SPLIT INTERFACE FOR FLIGHT DETAILS & MANUAL BAGGAGE DATA -->
-        <div class="form-grid" style="margin-bottom: 12px; background: #f0fdf4; padding: 12px; border-radius: 6px; border: 1px solid #bbf7d0;">
-            <div>
-                <label style="color: #166534;">Flight Routing Details (Manual Entry / GDS Paste)</label>
-                <textarea id="flightInput" style="height: 75px; font-family: monospace;" placeholder="ET 844 J 25JUN 4*CPTADD DK1  1350 2115  25JUN  E  0 789&#10;ET 680 J 25JUN 4*ADDDAC DK1  2320 0950  26JUN  E  0 787"></textarea>
-            </div>
-            <div>
-                <label style="color: #166534;">Baggage Details (Manual Entry: e.g. 1PCS, 2PCS, 23KG, 40KG)</label>
-                <textarea id="baggageInput" style="height: 75px;" placeholder="Sector 1: 2 PCS / 23 KG&#10;Sector 2: 1 PC / 30 KG"></textarea>
-            </div>
-        </div>
-
-        <div class="form-grid" style="margin-bottom: 12px; background: #fffbeb; padding: 10px; border-radius: 6px; border: 1px solid #fef3c7;">
-            <div>
-                <label>Prepared By (Select Executive Team Member)</label>
-                <select id="preparedByName">
-                    <option value="Shafiqul Islam">Shafiqul Islam</option>
-                    <option value="Shahriyar Hasan">Shahriyar Hasan</option>
-                    <option value="Md Asaduzzaman">Md Asaduzzaman</option>
-                    <option value="Md Tanvir Islam">Md Tanvir Islam</option>
-                </select>
-            </div>
-            <div>
-                <label>Received By (Client Name)</label>
-                <input type="text" id="receivedByName" placeholder="Authorized Representative">
-            </div>
-        </div>
-
-        <div style="margin-bottom: 12px;">
-            <label>Additional Notes Remarks Block (Appears at bottom)</label>
-            <textarea id="notesInput" placeholder="Enter custom contract stipulations or payment terms restrictions..."></textarea>
-        </div>
-
-        <div id="passengerContainer"></div>
-
-        <button class="btn add-btn" onclick="addPassenger()">+ Add Passenger Line</button>
-        <button class="btn generate-btn" onclick="generateDocument()">Compile Document Output</button>
+<!-- ══════════════ CONTROL PANEL ══════════════ -->
+<div class="panel">
+    <div class="panel-head">
+        <h1>GO PLANE — Document Configuration</h1>
+        <span class="badge">v2.5</span>
     </div>
 
-    <!-- ================= SMART A4 PRINT PREVIEW AREA ================= -->
-    <div class="invoice" id="invoiceArea">
-        <div class="watermark" id="watermarkText">GO PLANE</div>
-
-        <div class="header">
-            <div class="company">
-                <img src="logo-main.webp" class="logo">
-                <div class="company-details">
-                    <h1>GO PLANE PRIVATE LIMITED</h1>
-                    <p>Rashid Manson, B-2, House: 13, Road: 03, Block: A, Mirpur 11, Dhaka 1216. Bangladesh</p>
-                    <p>2 New Paltan, Culvert Road, Rupayan FPAB Tower, Suite Q, 1st Floor, Dhaka - 1000</p>
-                    <p>Email: info@goplane.com | Tel: +880 2226-623463 | Web: www.goplane.com</p>
-                </div>
-            </div>
-            <div class="invoice-title">
-                <h2 id="documentHeading">INVOICE</h2>
-                <p id="showInvoiceNo"></p>
-                <p id="showDate"></p>
-            </div>
+    <div class="grid g4">
+        <div class="field">
+            <label>Document Class</label>
+            <select id="documentType">
+                <option value="INVOICE">Commercial Invoice</option>
+                <option value="QUOTATION">Price Quotation</option>
+            </select>
         </div>
-
-        <div class="billing">
-            <div class="bill-box">
-                <h3>Account Bill To</h3>
-                <p id="showClient"></p>
-                <p id="showCompany"></p>
-                <p id="showAddress"></p>
-            </div>
-            <div class="bill-box">
-                <h3>Settlement & Payment Rules</h3>
-                <p><strong>Terms:</strong> Standard corporate ticketing credit terms apply.</p>
-                <p><strong>Due Date:</strong> Immediate processing via standard clearing banks unless pre-arranged.</p>
-            </div>
+        <div class="field">
+            <label>Document Date</label>
+            <input type="date" id="invoiceDate">
         </div>
-
-        <!-- MAIN PASSENGER DATA TABLE -->
-        <table class="data-table">
-            <thead>
-                <tr>
-                    <th style="width: 4%;">SL</th>
-                    <th style="width: 22%;">Passenger Details</th>
-                    <th style="width: 16%;">Ticket No.</th>
-                    <th style="width: 18%;">Route / Sector</th>
-                    <th style="width: 12%;">Carrier</th>
-                    <th style="width: 12%;">Dep. Date</th>
-                    <th style="width: 16%; text-align: right;">Fare (BDT)</th>
-                    <th style="width: 16%; text-align: right;" id="thAltHeader">Fare (USD)</th>
-                </tr>
-            </thead>
-            <tbody id="invoiceTableBody">
-                <!-- Records injected dynamically -->
-            </tbody>
-        </table>
-
-        <!-- ISOLATED SIDE-BY-SIDE TOTAL SUMMARY TABLE -->
-        <div class="summary-container">
-            <table class="total-table">
-                <thead>
-                    <tr>
-                        <th style="width: 50%;">NET TOTAL AMOUNT (BDT)</th>
-                        <th style="width: 50%;">NET TOTAL AMOUNT (<span class="lblAltCode">USD</span>)</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td id="tdTotalBDT" class="bg-bdt">0.00 ৳</td>
-                        <td id="tdTotalAlt" class="bg-alt">$0.00</td>
-                    </tr>
-                </tbody>
-            </table>
+        <div class="field">
+            <label>Reference No.</label>
+            <input type="text" id="invoiceNo" placeholder="GP-2026-001">
         </div>
-
-        <div class="meta-block">
-            <div class="words-section">
-                <p><strong>In Words (BDT):</strong> <span id="wordsBDT">Zero Taka Only</span></p>
-                <p style="margin-top:3px;"><strong>In Words (<span class="lblAltCode">USD</span>):</strong> <span id="wordsAlt">Zero Dollars Only</span></p>
-            </div>
-            <div class="rate-section" id="rateNote">
-                Book Rate Parity: 1 USD = 118.50 BDT
-            </div>
+        <div class="field">
+            <label>Secondary Currency</label>
+            <select id="altCurrency" onchange="updateAltLabels()">
+                <option value="USD">USD ($)</option>
+                <option value="EUR">EUR (€)</option>
+                <option value="GBP">GBP (£)</option>
+                <option value="AED">AED (د.إ)</option>
+            </select>
         </div>
+    </div>
 
-        <!-- FLIGHT ROUTING & BAGGAGE STRUCTURAL BOX (COMPACT DUAL PANE) -->
-        <div class="flight-details-section" id="flightDetailsBlock" style="display: none;">
-            <h3>Flight Schedule & Baggage Specifications</h3>
-            <div class="flight-flex-layout">
-                <div class="flight-text-pane" id="showFlightDetails"></div>
-                <div class="baggage-display-pane" id="showBaggageDetails"></div>
-            </div>
+    <div class="grid g4" style="margin-top: 10px;">
+        <div class="field">
+            <label>Client Name</label>
+            <input type="text" id="clientName" placeholder="John Doe">
         </div>
-
-        <!-- REMITTANCE BANK CLEARING SYSTEM -->
-        <div class="bank-section">
-            <h3>Remittance Bank Clearing System</h3>
-            <div class="bank-grid">
-                <div class="bank-box">
-                    <p><strong>BRAC BANK PLC </strong></p>
-                    <p>A/C Name: GO PLANE PRIVATE LIMITED</p>
-                    <p>A/C No: 2074065900001</p>
-                    <p>Branch: Mirpur Branch | Route: 060262983</p>
-                </div>
-                <div class="bank-box">
-                    <p><strong>Dutch Bangla Bank PLC</strong></p>
-                    <p>A/C Name: GO PLANE PRIVATE LIMITED</p>
-                    <p>A/C No: 2111100360371</p>
-                    <p>Branch: Pallabi Branch | Route: 090263581</p>
-                </div>
-                <div class="bank-box">
-                    <p><strong>Meghna Bank PLC</strong></p>
-                    <p>A/C Name: GO PLANE PRIVATE LIMITED</p>
-                    <p>A/C No: 100711100000132</p>
-                    <p>Branch: Agent South Dhaka | Route: 275270607</p>
-                </div>
-            </div>
+        <div class="field">
+            <label>Company Name</label>
+            <input type="text" id="companyName" placeholder="ABC Corporate Ltd.">
         </div>
-
-        <!-- ADDITIONAL NOTES SECTION -->
-        <div class="notes-section" id="notesBlock" style="display: none;">
-            <h3>Additional System Notes & Declarations</h3>
-            <div class="notes-content" id="showNotesDetails"></div>
+        <div class="field" style="grid-column: span 2;">
+            <label>Billing Address</label>
+            <input type="text" id="address" placeholder="Street, City, Country">
         </div>
+    </div>
 
-        <!-- SIGNATURES -->
-        <div class="signature">
-            <div class="sig-holder">
-                <p class="name-output" id="outPreparedName">Account Representative</p>
-                <div class="line"></div>
-                <p class="title">Prepared By</p>
-            </div>
-            <div class="sig-holder">
-                <p class="name-output" id="outReceivedName">Authorized Receiver</p>
-                <div class="line"></div>
-                <p class="title">Received By</p>
-            </div>
+    <div class="grid g22" style="margin-top: 10px;">
+        <div class="field">
+            <label>Exchange Rate (1 Foreign → BDT)</label>
+            <input type="number" id="exchangeRate" value="118.50" step="0.01">
         </div>
+    </div>
 
-        <div class="footer">
-            THANK YOU FOR INTRODUCING YOUR AIR TRAVEL BUSINESS TO GO PLANE PRIVATE LIMITED
+    <!-- FLIGHT & BAGGAGE -->
+    <div class="section-label">Flight & Baggage Details</div>
+    <div class="zone zone-green grid g2">
+        <div class="field">
+            <label>Flight Routing (GDS / Manual)</label>
+            <textarea id="flightInput" style="font-family: var(--mono); font-size: 10px;" placeholder="ET 844 J 25JUN 4*CPTADD DK1  1350 2115  25JUN  E  0 789&#10;ET 680 J 25JUN 4*ADDDAC DK1  2320 0950  26JUN  E  0 787"></textarea>
         </div>
+        <div class="field">
+            <label>Baggage Details</label>
+            <textarea id="baggageInput" placeholder="Sector 1: 2 PCS / 23 KG&#10;Sector 2: 1 PC / 30 KG"></textarea>
+        </div>
+    </div>
 
-        <button class="btn print-btn" onclick="window.print()">Trigger Local Hardware Print Execution</button>
+    <!-- SERVICE CHARGE -->
+    <div class="section-label">Additional Service Charge</div>
+    <div class="zone zone-blue grid g3">
+        <div class="field">
+            <label>Service Charge Description</label>
+            <input type="text" id="serviceDesc" placeholder="e.g. Visa Processing Fee, Handling Charge">
+        </div>
+        <div class="field">
+            <label>Amount (BDT) — Leave 0 if N/A</label>
+            <input type="number" id="serviceChargeAmt" value="0" min="0" step="0.01">
+        </div>
+        <div class="field" style="display: flex; align-items: flex-end;">
+            <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 10px; color: #374151; font-family: var(--sans); text-transform: none; letter-spacing: 0; margin-bottom: 0; padding-bottom: 8px;">
+                <input type="checkbox" id="includeServiceCharge" style="width: auto; accent-color: var(--blue);"> Include in document
+            </label>
+        </div>
+    </div>
+
+    <!-- SIGNATORIES -->
+    <div class="section-label">Signatories & Notes</div>
+    <div class="zone zone-amber grid g3">
+        <div class="field">
+            <label>Prepared By</label>
+            <select id="preparedByName">
+                <option value="Shafiqul Islam">Shafiqul Islam</option>
+                <option value="Shahriyar Hasan">Shahriyar Hasan</option>
+                <option value="Md Asaduzzaman">Md Asaduzzaman</option>
+                <option value="Md Tanvir Islam">Md Tanvir Islam</option>
+            </select>
+        </div>
+        <div class="field">
+            <label>Received By</label>
+            <input type="text" id="receivedByName" placeholder="Authorized Representative">
+        </div>
+        <div class="field">
+            <label>Additional Notes</label>
+            <textarea id="notesInput" placeholder="Custom terms, payment restrictions..."></textarea>
+        </div>
+    </div>
+
+    <!-- PASSENGERS -->
+    <div class="section-label">Passenger Rows</div>
+    <div id="passengerContainer"></div>
+
+    <div class="actions">
+        <button class="btn btn-blue" onclick="addPassenger()">+ Add Passenger</button>
+        <button class="btn btn-gold" onclick="generateDocument()">⚡ Compile Document</button>
     </div>
 </div>
 
+<!-- ══════════════ PRINT CONTROLS ══════════════ -->
+<div class="print-controls" id="printControls">
+    <h3>🖨 Pre-Print Currency Display Options</h3>
+    <div class="toggle-group">
+        <span style="font-family: var(--mono); font-size: 9.5px; color: var(--gray); margin-right: 4px;">Show:</span>
+        <button class="toggle-btn active" onclick="setCurrencyMode('both', this)">Both BDT + <span id="tglAlt1">USD</span></button>
+        <button class="toggle-btn" onclick="setCurrencyMode('bdt', this)">BDT Only</button>
+        <button class="toggle-btn" onclick="setCurrencyMode('alt', this)"><span id="tglAlt2">USD</span> Only</button>
+        <button class="print-trigger" onclick="window.print()">🖨 Print</button>
+    </div>
+</div>
+
+<!-- ══════════════ INVOICE DOCUMENT ══════════════ -->
+<div class="invoice" id="invoiceArea">
+    <div class="watermark" id="watermarkText">GO PLANE</div>
+
+    <!-- HEADER -->
+    <div class="inv-header">
+        <div class="inv-brand">
+            <img src="logo-main.webp" class="inv-logo">
+            <div>
+                <div class="inv-company-name">GO PLANE PRIVATE LIMITED</div>
+                <div class="inv-company-sub">
+                    Rashid Manson, B-2, House: 13, Road: 03, Block: A, Mirpur 11, Dhaka 1216. Bangladesh<br>
+                    2 New Paltan, Culvert Road, Rupayan FPAB Tower, Suite Q, 1st Floor, Dhaka – 1000<br>
+                    Email: info@goplane.com &nbsp;|&nbsp; Tel: +880 2226-623463 &nbsp;|&nbsp; Web: www.goplane.com
+                </div>
+            </div>
+        </div>
+        <div class="inv-title-block">
+            <div class="inv-type-label" id="documentHeading">INVOICE</div>
+            <div class="inv-meta">
+                <div id="showInvoiceNo"></div>
+                <div id="showDate"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- BILLING -->
+    <div class="billing-row">
+        <div class="bill-card">
+            <div class="bill-card-title">Account Bill To</div>
+            <div id="showClient"></div>
+            <div id="showCompany"></div>
+            <div id="showAddress"></div>
+        </div>
+        <div class="bill-card">
+            <div class="bill-card-title">Settlement & Payment Rules</div>
+            <div><strong>Terms:</strong> Standard corporate ticketing credit terms apply.</div>
+            <div><strong>Due Date:</strong> Immediate processing unless pre-arranged.</div>
+        </div>
+    </div>
+
+    <!-- MAIN TABLE -->
+    <table class="inv-table">
+        <thead>
+            <tr>
+                <th style="width:4%;">SL</th>
+                <th style="width:22%;">Passenger</th>
+                <th style="width:17%;">Ticket No.</th>
+                <th style="width:18%;">Route / Sector</th>
+                <th style="width:11%;">Carrier</th>
+                <th style="width:12%;">Dep. Date</th>
+                <th id="thBDT" style="width:8%; text-align:right;" class="col-bdt">BDT ৳</th>
+                <th id="thALT" style="width:8%; text-align:right;" class="col-alt">USD $</th>
+            </tr>
+        </thead>
+        <tbody id="invoiceTableBody"></tbody>
+    </table>
+
+    <!-- TOTALS -->
+    <div class="totals-area">
+        <table class="totals-table">
+            <thead>
+                <tr>
+                    <th id="thTotalBDT" class="col-bdt">TOTAL (BDT ৳)</th>
+                    <th id="thTotalALT" class="col-alt">TOTAL (<span class="lbl-alt">USD</span>)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td id="tdTotalBDT" class="td-total-bdt col-bdt">0.00 ৳</td>
+                    <td id="tdTotalAlt" class="td-total-alt col-alt">$0.00</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- WORDS & RATE -->
+    <div class="words-rate-row">
+        <div class="words-block">
+            <div class="words-bdt"><strong>In Words (BDT):</strong> <span id="wordsBDT">Zero Taka Only</span></div>
+            <div class="words-alt" style="margin-top:2px;"><strong>In Words (<span class="lbl-alt">USD</span>):</strong> <span id="wordsAlt">Zero Dollars Only</span></div>
+        </div>
+        <div class="rate-tag" id="rateNote">1 USD = 118.50 BDT</div>
+    </div>
+
+    <!-- FLIGHT SECTION -->
+    <div class="flight-section" id="flightDetailsBlock" style="display:none;">
+        <div class="section-title">Flight Schedule &amp; Baggage Specifications</div>
+        <div class="flight-panes">
+            <div class="flight-pane-text" id="showFlightDetails"></div>
+            <div class="baggage-pane" id="showBaggageDetails"></div>
+        </div>
+    </div>
+
+    <!-- BANK SECTION -->
+    <div class="bank-section">
+        <div class="section-title">Remittance Bank Clearing System</div>
+        <div class="bank-grid">
+            <div class="bank-card">
+                <strong>BRAC BANK PLC</strong>
+                A/C Name: GO PLANE PRIVATE LIMITED<br>
+                A/C No: 2074065900001<br>
+                Branch: Mirpur &nbsp;|&nbsp; Route: 060262983
+            </div>
+            <div class="bank-card">
+                <strong>Dutch Bangla Bank PLC</strong>
+                A/C Name: GO PLANE PRIVATE LIMITED<br>
+                A/C No: 2111100360371<br>
+                Branch: Pallabi &nbsp;|&nbsp; Route: 090263581
+            </div>
+            <div class="bank-card">
+                <strong>Meghna Bank PLC</strong>
+                A/C Name: GO PLANE PRIVATE LIMITED<br>
+                A/C No: 100711100000132<br>
+                Branch: Agent South Dhaka &nbsp;|&nbsp; Route: 275270607
+            </div>
+        </div>
+    </div>
+
+    <!-- NOTES -->
+    <div class="notes-section" id="notesBlock" style="display:none;">
+        <div class="section-title">Additional Notes &amp; Declarations</div>
+        <div class="notes-content" id="showNotesDetails"></div>
+    </div>
+
+    <!-- SIGNATURE -->
+    <div class="signature-row">
+        <div class="sig-block">
+            <div class="sig-name" id="outPreparedName">Account Representative</div>
+            <div class="sig-line"></div>
+            <div class="sig-role">Prepared By</div>
+        </div>
+        <div class="sig-block">
+            <div class="sig-name" id="outReceivedName">Authorized Receiver</div>
+            <div class="sig-line"></div>
+            <div class="sig-role">Received By</div>
+        </div>
+    </div>
+
+    <div class="inv-footer">
+        Thank you for introducing your air travel business to Go Plane Private Limited
+    </div>
+</div>
+
+</div><!-- end container -->
+
 <script>
-function numberToWords(num){
-    if(num === 0) return "Zero";
+/* ─── UTILITIES ─── */
+function numberToWords(num) {
+    if (num === 0) return "Zero";
     const ones = ["","One","Two","Three","Four","Five","Six","Seven","Eight","Nine","Ten",
-    "Eleven","Twelve","Thirteen","Fourteen","Fifteen","Sixteen","Seventeen","Eighteen","Nineteen"];
+        "Eleven","Twelve","Thirteen","Fourteen","Fifteen","Sixteen","Seventeen","Eighteen","Nineteen"];
     const tens = ["","","Twenty","Thirty","Forty","Fifty","Sixty","Seventy","Eighty","Ninety"];
-
-    function convert(n){
-        let str = "";
-        if(n >= 100){
-            str += ones[Math.floor(n/100)] + " Hundred ";
-            n = n % 100;
-        }
-        if(n >= 20){
-            str += tens[Math.floor(n/10)] + " ";
-            n = n % 10;
-        }
-        if(n > 0){
-            str += ones[n] + " ";
-        }
-        return str;
+    function convert(n) {
+        let s = "";
+        if (n >= 100) { s += ones[Math.floor(n/100)] + " Hundred "; n %= 100; }
+        if (n >= 20)  { s += tens[Math.floor(n/10)] + " "; n %= 10; }
+        if (n > 0)    { s += ones[n] + " "; }
+        return s;
     }
-
-    let result = "";
-    let thousand = Math.floor(num / 1000);
-    let remainder = num % 1000;
-
-    if(thousand > 0){ result += convert(thousand) + "Thousand "; }
-    if(remainder > 0){ result += convert(remainder); }
-    return result.trim();
+    let th = Math.floor(num/1000), rem = num%1000, res = "";
+    if (th > 0) res += convert(th) + "Thousand ";
+    if (rem > 0) res += convert(rem);
+    return res.trim();
 }
 
-function getCurrencyString(code){
-    switch(code){
-        case "USD": return "Dollars";
-        case "EUR": return "Euros";
-        case "GBP": return "Pounds";
-        case "AED": return "Dirhams";
-        default: return "Units";
-    }
+function currencyName(code) {
+    return { USD:"Dollars", EUR:"Euros", GBP:"Pounds", AED:"Dirhams" }[code] || "Units";
 }
 
-function getCurrencySymbol(code){
-    switch(code){
-        case "USD": return "$";
-        case "EUR": return "€";
-        case "GBP": return "£";
-        case "AED": return "د.إ";
-        default: return "";
-    }
+function currencySymbol(code) {
+    return { USD:"$", EUR:"€", GBP:"£", AED:"د.إ" }[code] || "";
 }
 
+function fmt(n, dec=2) {
+    return n.toLocaleString(undefined, { minimumFractionDigits: dec, maximumFractionDigits: dec });
+}
+
+/* ─── CURRENCY LABEL UPDATE ─── */
 function updateAltLabels() {
     const code = document.getElementById("altCurrency").value;
-    document.getElementById("thAltHeader").innerText = `Fare (${code})`;
-    const elements = document.getElementsByClassName("lblAltCode");
-    for(let el of elements){ el.innerText = code; }
+    const sym  = currencySymbol(code);
+    document.getElementById("thALT").innerHTML = `${code} ${sym}`;
+    document.getElementById("thTotalALT").innerHTML = `TOTAL (<span class="lbl-alt">${code}</span>)`;
+    document.querySelectorAll(".lbl-alt").forEach(el => el.innerText = code);
+    document.getElementById("tglAlt1").innerText = code;
+    document.getElementById("tglAlt2").innerText = code;
 }
 
-let passengerCount = 0;
-function addPassenger(){
-    passengerCount++;
-    const container = document.getElementById("passengerContainer");
-    const box = document.createElement("div");
-    box.classList.add("passenger-box");
-    box.innerHTML = `
-    <h3>Passenger Matrix Row #${passengerCount}</h3>
-    <div class="form-grid">
-        <div><label>Passenger Name</label><input type="text" class="name"></div>
-        <div><label>Ticket Number</label><input type="text" class="ticket"></div>
-        <div><label>Route</label><input type="text" class="route"></div>
-        <div><label>Airline</label><input type="text" class="airline"></div>
-        <div><label>Departure Date</label><input type="date" class="departure"></div>
-        <div><label>Amount (BDT Value Base)</label><input type="number" class="amount"></div>
+/* ─── CURRENCY DISPLAY MODE ─── */
+let currMode = "both";
+function setCurrencyMode(mode, btn) {
+    currMode = mode;
+    document.querySelectorAll(".toggle-btn").forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+    document.body.classList.remove("hide-bdt","hide-alt");
+    if (mode === "bdt") document.body.classList.add("hide-alt");
+    if (mode === "alt") document.body.classList.add("hide-bdt");
+}
+
+/* ─── PASSENGERS ─── */
+let paxCount = 0;
+function addPassenger() {
+    paxCount++;
+    const c = document.getElementById("passengerContainer");
+    const d = document.createElement("div");
+    d.classList.add("pax-box");
+    d.id = `pax-${paxCount}`;
+    d.innerHTML = `
+    <div class="pax-head">
+        <span>Passenger Row #${paxCount}</span>
+        <button class="del-btn" onclick="this.closest('.pax-box').remove()">✕ Remove</button>
+    </div>
+    <div class="grid g4" style="gap:8px;">
+        <div class="field"><label>Passenger Name</label><input type="text" class="p-name"></div>
+        <div class="field"><label>Ticket Number</label><input type="text" class="p-ticket" style="font-family: var(--mono);"></div>
+        <div class="field"><label>Route</label><input type="text" class="p-route"></div>
+        <div class="field"><label>Airline</label><input type="text" class="p-airline"></div>
+        <div class="field"><label>Departure Date</label><input type="date" class="p-dep"></div>
+        <div class="field"><label>Amount (BDT)</label><input type="number" class="p-amt" min="0" step="0.01" value="0"></div>
     </div>`;
-    container.appendChild(box);
+    c.appendChild(d);
 }
 addPassenger();
 
-function generateDocument(){
+/* ─── GENERATE ─── */
+function generateDocument() {
     const docType = document.getElementById("documentType").value;
     const altCode = document.getElementById("altCurrency").value;
-    const rate = parseFloat(document.getElementById("exchangeRate").value) || 118.50;
-    const symbol = getCurrencySymbol(altCode);
+    const rate    = parseFloat(document.getElementById("exchangeRate").value) || 118.50;
+    const sym     = currencySymbol(altCode);
 
-    // Headings Configuration
+    // Headings
     document.getElementById("documentHeading").innerText = docType;
-    document.getElementById("watermarkText").innerText = "GO PLANE " + docType;
-    document.getElementById("thAltHeader").innerText = `Fare (${altCode})`;
-    document.getElementById("rateNote").innerText = `Book Rate Parity: 1 ${altCode} = ${rate.toFixed(2)} BDT`;
+    document.getElementById("watermarkText").innerText   = "GO PLANE " + docType;
+    document.getElementById("rateNote").innerText = `1 ${altCode} = ${rate.toFixed(2)} BDT`;
+    updateAltLabels();
 
-    // Basic Fields Mapping
-    document.getElementById("showDate").innerHTML = "<strong>Date:</strong> " + document.getElementById("invoiceDate").value;
-    document.getElementById("showInvoiceNo").innerHTML = `<strong>${docType === "INVOICE" ? "Invoice" : "Quotation"} No:</strong> ` + document.getElementById("invoiceNo").value;
-    document.getElementById("showClient").innerHTML = "<strong>Attn:</strong> " + document.getElementById("clientName").value;
-    document.getElementById("showCompany").innerHTML = "<strong>Company:</strong> " + document.getElementById("companyName").value;
-    document.getElementById("showAddress").innerHTML = "<strong>Address:</strong> " + document.getElementById("address").value;
+    // Meta
+    const rawDate = document.getElementById("invoiceDate").value;
+    const dispDate = rawDate ? new Date(rawDate).toLocaleDateString("en-GB", { day:"2-digit", month:"short", year:"numeric" }) : "—";
+    document.getElementById("showDate").innerHTML     = `<strong>Date:</strong> ${dispDate}`;
+    document.getElementById("showInvoiceNo").innerHTML = `<strong>${docType === "INVOICE" ? "Inv" : "Quot"} No:</strong> ${document.getElementById("invoiceNo").value}`;
+    document.getElementById("showClient").innerHTML   = `<strong>Attn:</strong> ${document.getElementById("clientName").value}`;
+    document.getElementById("showCompany").innerHTML  = `<strong>Co.:</strong> ${document.getElementById("companyName").value}`;
+    document.getElementById("showAddress").innerHTML  = `<strong>Addr:</strong> ${document.getElementById("address").value}`;
 
-    // Flight Routing & Baggage Management
-    const flightData = document.getElementById("flightInput").value;
+    // Flight / Baggage
+    const flightData  = document.getElementById("flightInput").value;
     const baggageData = document.getElementById("baggageInput").value;
     const flightBlock = document.getElementById("flightDetailsBlock");
-    
-    if(flightData.trim() !== "" || baggageData.trim() !== "") {
+    if (flightData.trim() || baggageData.trim()) {
         flightBlock.style.display = "block";
-        document.getElementById("showFlightDetails").innerText = flightData ? flightData : "N/A";
-        document.getElementById("showBaggageDetails").innerHTML = baggageData ? `<strong>Baggage Rules:</strong><br>${baggageData.replace(/\n/g, '<br>')}` : "N/A";
+        document.getElementById("showFlightDetails").innerText = flightData || "N/A";
+        document.getElementById("showBaggageDetails").innerHTML = baggageData
+            ? `<strong>Baggage Rules:</strong><br>${baggageData.replace(/\n/g,"<br>")}`
+            : "N/A";
     } else {
         flightBlock.style.display = "none";
     }
 
-    // Additional Notes Parsing
+    // Notes
     const notesData = document.getElementById("notesInput").value;
     const notesBlock = document.getElementById("notesBlock");
-    if(notesData.trim() !== "") {
+    if (notesData.trim()) {
         notesBlock.style.display = "block";
         document.getElementById("showNotesDetails").innerText = notesData;
     } else {
         notesBlock.style.display = "none";
     }
 
-    // Human Resource Dynamic Dropdowns
-    const preparedBy = document.getElementById("preparedByName").value;
-    const receivedBy = document.getElementById("receivedByName").value || "Client Signatory";
-    document.getElementById("outPreparedName").innerText = preparedBy;
-    document.getElementById("outReceivedName").innerText = receivedBy;
+    // Signatories
+    document.getElementById("outPreparedName").innerText = document.getElementById("preparedByName").value;
+    document.getElementById("outReceivedName").innerText = document.getElementById("receivedByName").value || "Client Signatory";
 
-    // Build Table Rows
-    const names = document.querySelectorAll(".name");
-    const tickets = document.querySelectorAll(".ticket");
-    const routes = document.querySelectorAll(".route");
-    const airlines = document.querySelectorAll(".airline");
-    const departures = document.querySelectorAll(".departure");
-    const amounts = document.querySelectorAll(".amount");
-
+    // Build rows
     const tbody = document.getElementById("invoiceTableBody");
     tbody.innerHTML = "";
-
     let totalBDT = 0;
 
-    for(let i=0; i<names.length; i++){
-        let bdtVal = Number(amounts[i].value || 0);
-        totalBDT += bdtVal;
-        let altVal = bdtVal / rate;
+    const boxes = document.querySelectorAll(".pax-box");
+    boxes.forEach((box, i) => {
+        const name    = box.querySelector(".p-name").value;
+        const ticket  = box.querySelector(".p-ticket").value;
+        const route   = box.querySelector(".p-route").value;
+        const airline = box.querySelector(".p-airline").value;
+        const dep     = box.querySelector(".p-dep").value;
+        const bdt     = parseFloat(box.querySelector(".p-amt").value) || 0;
+        totalBDT += bdt;
+        const alt = bdt / rate;
 
         tbody.innerHTML += `
         <tr>
             <td>${i+1}</td>
-            <td style="font-weight:700; color:#001ea8;">${names[i].value.toUpperCase()}</td>
-            <td>${tickets[i].value}</td>
-            <td>${routes[i].value}</td>
-            <td>${airlines[i].value}</td>
-            <td>${departures[i].value}</td>
-            <td class="num-col">${bdtVal.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})} ৳</td>
-            <td class="num-col" style="color: #b45309;">${symbol}${altVal.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
+            <td class="td-name">${name.toUpperCase()}</td>
+            <td class="td-ticket">${ticket}</td>
+            <td>${route}</td>
+            <td>${airline}</td>
+            <td>${dep}</td>
+            <td class="td-amt td-bdt col-bdt">${fmt(bdt)} ৳</td>
+            <td class="td-amt td-alt col-alt">${sym}${fmt(alt)}</td>
+        </tr>`;
+    });
+
+    // Service charge
+    const svcEnabled = document.getElementById("includeServiceCharge").checked;
+    const svcAmt     = parseFloat(document.getElementById("serviceChargeAmt").value) || 0;
+    const svcDesc    = document.getElementById("serviceDesc").value || "Additional Service Charge";
+
+    if (svcEnabled && svcAmt > 0) {
+        totalBDT += svcAmt;
+        const svcAlt = svcAmt / rate;
+        tbody.innerHTML += `
+        <tr class="svc-row">
+            <td>—</td>
+            <td colspan="4" class="svc-label" style="font-style: italic; color: #6b7280;">⊕ ${svcDesc}</td>
+            <td></td>
+            <td class="td-amt td-bdt col-bdt" style="color: #6b7280;">${fmt(svcAmt)} ৳</td>
+            <td class="td-amt td-alt col-alt" style="color: #92400e;">${sym}${fmt(svcAlt)}</td>
         </tr>`;
     }
 
-    let totalAlt = totalBDT / rate;
+    // Totals
+    const totalAlt = totalBDT / rate;
+    document.getElementById("tdTotalBDT").innerText = fmt(totalBDT) + " ৳";
+    document.getElementById("tdTotalAlt").innerText = sym + " " + fmt(totalAlt) + " " + altCode;
 
-    // Inject Ledger Summary
-    document.getElementById("tdTotalBDT").innerText = totalBDT.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}) + " ৳";
-    document.getElementById("tdTotalAlt").innerText = symbol + " " + totalAlt.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}) + " " + altCode;
-
-    // Map Wordings
     document.getElementById("wordsBDT").innerText = numberToWords(Math.floor(totalBDT)) + " Taka Only";
-    document.getElementById("wordsAlt").innerText = numberToWords(Math.floor(totalAlt)) + " " + getCurrencyString(altCode) + " Only";
+    document.getElementById("wordsAlt").innerText = numberToWords(Math.floor(totalAlt)) + " " + currencyName(altCode) + " Only";
 
-    // View Layer Presentation Trigger
+    // Show document
     document.getElementById("invoiceArea").style.display = "block";
-    window.scrollTo({ top: document.getElementById("invoiceArea").offsetTop, behavior: 'smooth' });
+    document.getElementById("printControls").style.display = "block";
+    window.scrollTo({ top: document.getElementById("printControls").offsetTop - 10, behavior: "smooth" });
 }
 </script>
 </body>
