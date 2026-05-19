@@ -1056,9 +1056,9 @@ function generateDocument() {
     const dispDate = rawDate ? new Date(rawDate).toLocaleDateString("en-GB", { day:"2-digit", month:"short", year:"numeric" }) : "—";
     document.getElementById("showDate").innerHTML     = `<strong>Date:</strong> ${dispDate}`;
     document.getElementById("showInvoiceNo").innerHTML = `<strong>${docType === "INVOICE" ? "Inv" : "Quot"} No:</strong> ${document.getElementById("invoiceNo").value}`;
-    document.getElementById("showClient").innerHTML   = `<strong>Attn:</strong> ${document.getElementById("clientName").value}`;
-    document.getElementById("showCompany").innerHTML  = `<strong>Co.:</strong> ${document.getElementById("companyName").value}`;
-    document.getElementById("showAddress").innerHTML  = `<strong>Addr:</strong> ${document.getElementById("address").value}`;
+    document.getElementById("showClient").innerHTML   = `<strong>Name:</strong> ${document.getElementById("clientName").value}`;
+    document.getElementById("showCompany").innerHTML  = `<strong>Company.:</strong> ${document.getElementById("companyName").value}`;
+    document.getElementById("showAddress").innerHTML  = `<strong>Address:</strong> ${document.getElementById("address").value}`;
 
     // Flight / Baggage
     const flightData  = document.getElementById("flightInput").value;
