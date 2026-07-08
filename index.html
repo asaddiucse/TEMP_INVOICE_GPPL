@@ -589,6 +589,10 @@ body {
 
 .bank-card strong { color: var(--blue); font-size: 7.8px; font-family: var(--display); font-weight: 700; display: block; margin-bottom: 1px; }
 
+body.corp-invoice-mode #bankBRAC,
+body.corp-invoice-mode #bankDBBL { display: none !important; }
+body.corp-invoice-mode .bank-grid { grid-template-columns: 1fr !important; }
+
 /* NOTES */
 .notes-section {
     border-top: 1px dashed #d0d9ee;
@@ -689,6 +693,7 @@ body.hide-alt .td-alt { display: none !important; }
             <label>Document Class</label>
             <select id="documentType">
                 <option value="INVOICE">Commercial Invoice</option>
+                <option value="CORP_INVOICE">Corporate Invoice</option>
                 <option value="QUOTATION">Price Quotation</option>
             </select>
         </div>
@@ -910,20 +915,20 @@ body.hide-alt .td-alt { display: none !important; }
     <!-- BANK SECTION -->
     <div class="bank-section">
         <div class="section-title">Bank Account Details</div>
-        <div class="bank-grid">
-            <div class="bank-card">
+        <div class="bank-grid" id="bankGrid">
+            <div class="bank-card" id="bankBRAC">
                 <strong>BRAC BANK PLC</strong>
                 A/C Name: GO PLANE PRIVATE LIMITED<br>
                 A/C No: 2074065900001<br>
                 Branch: Mirpur &nbsp;|&nbsp; Route: 060262983
             </div>
-            <div class="bank-card">
+            <div class="bank-card" id="bankDBBL">
                 <strong>Dutch Bangla Bank PLC</strong>
                 A/C Name: GO PLANE PRIVATE LIMITED<br>
                 A/C No: 2111100360371<br>
                 Branch: Pallabi &nbsp;|&nbsp; Route: 090263581
             </div>
-            <div class="bank-card">
+            <div class="bank-card" id="bankMeghna">
                 <strong>Meghna Bank PLC</strong>
                 A/C Name: GO PLANE PRIVATE LIMITED<br>
                 A/C No: 100711100000132<br>
@@ -1046,16 +1051,21 @@ function generateDocument() {
     const sym     = currencySymbol(altCode);
 
     // Headings
-    document.getElementById("documentHeading").innerText = docType;
-    document.getElementById("watermarkText").innerText   = "GO PLANE " + docType;
+    const isCorp = docType === "CORP_INVOICE";
+    const headingText = isCorp ? "CORPORATE INVOICE" : docType;
+    document.getElementById("documentHeading").innerText = headingText;
+    document.getElementById("watermarkText").innerText   = "GO PLANE " + headingText;
     document.getElementById("rateNote").innerText = `1 ${altCode} = ${rate.toFixed(2)} BDT`;
     updateAltLabels();
+
+    // Bank details: Corporate Invoice shows Meghna Bank only
+    document.body.classList.toggle("corp-invoice-mode", isCorp);
 
     // Meta
     const rawDate = document.getElementById("invoiceDate").value;
     const dispDate = rawDate ? new Date(rawDate).toLocaleDateString("en-GB", { day:"2-digit", month:"short", year:"numeric" }) : "—";
     document.getElementById("showDate").innerHTML     = `<strong>Date:</strong> ${dispDate}`;
-    document.getElementById("showInvoiceNo").innerHTML = `<strong>${docType === "INVOICE" ? "Inv" : "Quot"} No:</strong> ${document.getElementById("invoiceNo").value}`;
+    document.getElementById("showInvoiceNo").innerHTML = `<strong>${docType === "QUOTATION" ? "Quot" : "Inv"} No:</strong> ${document.getElementById("invoiceNo").value}`;
     document.getElementById("showClient").innerHTML   = `<strong>Name:</strong> ${document.getElementById("clientName").value}`;
     document.getElementById("showCompany").innerHTML  = `<strong>Company.:</strong> ${document.getElementById("companyName").value}`;
     document.getElementById("showAddress").innerHTML  = `<strong>Address:</strong> ${document.getElementById("address").value}`;
