@@ -80,10 +80,10 @@ body {
 .field label {
     display: block;
     font-family: var(--mono);
-    font-size: 9.5px;
-    font-weight: 500;
+    font-size: 11px;
+    font-weight: 600;
     color: var(--gray);
-    margin-bottom: 4px;
+    margin-bottom: 5px;
     text-transform: uppercase;
     letter-spacing: 0.4px;
 }
@@ -92,8 +92,8 @@ body {
     width: 100%;
     border: 1px solid var(--border);
     border-radius: 5px;
-    padding: 7px 9px;
-    font-size: 11px;
+    padding: 9px 11px;
+    font-size: 16px;
     font-family: var(--sans);
     color: var(--ink);
     background: #fafbff;
@@ -753,7 +753,7 @@ body.hide-alt .td-alt { display: none !important; }
     <div class="zone zone-green grid g2">
         <div class="field">
             <label>Flight Routing (GDS / Manual)</label>
-            <textarea id="flightInput" style="font-family: var(--mono); font-size: 10px;" placeholder="ET 844 J 25JUN 4*CPTADD DK1  1350 2115  25JUN  E  0 789&#10;ET 680 J 25JUN 4*ADDDAC DK1  2320 0950  26JUN  E  0 787"></textarea>
+            <textarea id="flightInput" style="font-family: var(--mono); font-size: 15px;" placeholder="ET 844 J 25JUN 4*CPTADD DK1  1350 2115  25JUN  E  0 789&#10;ET 680 J 25JUN 4*ADDDAC DK1  2320 0950  26JUN  E  0 787"></textarea>
         </div>
         <div class="field">
             <label>Baggage Details</label>
@@ -773,7 +773,7 @@ body.hide-alt .td-alt { display: none !important; }
             <input type="number" id="serviceChargeAmt" value="0" min="0" step="0.01">
         </div>
         <div class="field" style="display: flex; align-items: flex-end;">
-            <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 10px; color: #374151; font-family: var(--sans); text-transform: none; letter-spacing: 0; margin-bottom: 0; padding-bottom: 8px;">
+            <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 13px; color: #374151; font-family: var(--sans); text-transform: none; letter-spacing: 0; margin-bottom: 0; padding-bottom: 8px;">
                 <input type="checkbox" id="includeServiceCharge" style="width: auto; accent-color: var(--blue);"> Include in document
             </label>
         </div>
