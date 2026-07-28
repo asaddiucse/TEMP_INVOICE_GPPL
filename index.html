@@ -222,7 +222,10 @@ body {
     gap: 8px;
     flex-wrap: wrap;
     align-items: center;
+    margin-bottom: 10px;
 }
+
+.toggle-group:last-child { margin-bottom: 0; }
 
 .toggle-btn {
     border: 1.5px solid var(--border);
@@ -241,6 +244,11 @@ body {
     background: var(--blue);
     color: #fff;
     border-color: var(--blue);
+}
+
+.toggle-btn.bank-toggle.active {
+    background: var(--gold);
+    border-color: var(--gold);
 }
 
 .print-trigger {
@@ -579,7 +587,7 @@ body {
 
 .bank-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
     gap: 8px;
     margin-top: 5px;
 }
@@ -597,9 +605,10 @@ body {
 
 .bank-card strong { color: var(--blue); font-size: 8.8px; font-family: var(--display); font-weight: 800; display: block; margin-bottom: 1px; }
 
-body.corp-invoice-mode #bankBRAC,
-body.corp-invoice-mode #bankDBBL { display: none !important; }
-body.corp-invoice-mode .bank-grid { grid-template-columns: 1fr !important; }
+/* Manual bank visibility — controlled from the Print Controls panel */
+body.hide-bank1 #bankBRAC   { display: none !important; }
+body.hide-bank2 #bankDBBL   { display: none !important; }
+body.hide-bank3 #bankMeghna { display: none !important; }
 
 /* NOTES */
 .notes-section {
@@ -681,7 +690,6 @@ body.hide-alt .td-alt { display: none !important; }
     body { background: #fff; padding: 0; }
     .panel, .print-controls { display: none !important; }
     .invoice { display: block !important; width: 100%; min-height: auto; box-shadow: none; padding: 0; }
-    .bank-grid { grid-template-columns: repeat(3, 1fr) !important; }
     * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
 }
 </style>
@@ -694,7 +702,7 @@ body.hide-alt .td-alt { display: none !important; }
 <div class="panel">
     <div class="panel-head">
         <h1>GO PLANE — Document Configuration</h1>
-        <span class="badge">v2.5</span>
+        <span class="badge">v2.6</span>
     </div>
 
     <div class="grid g4">
@@ -818,12 +826,20 @@ body.hide-alt .td-alt { display: none !important; }
 
 <!-- ══════════════ PRINT CONTROLS ══════════════ -->
 <div class="print-controls" id="printControls">
-    <h3>🖨 Pre-Print Currency Display Options</h3>
+    <h3>🖨 Pre-Print Display Options</h3>
+
     <div class="toggle-group">
-        <span style="font-family: var(--mono); font-size: 9.5px; color: var(--gray); margin-right: 4px;">Show:</span>
+        <span style="font-family: var(--mono); font-size: 9.5px; color: var(--gray); margin-right: 4px;">Currency:</span>
         <button class="toggle-btn active" onclick="setCurrencyMode('both', this)">Both BDT + <span id="tglAlt1">USD</span></button>
         <button class="toggle-btn" onclick="setCurrencyMode('bdt', this)">BDT Only</button>
         <button class="toggle-btn" onclick="setCurrencyMode('alt', this)"><span id="tglAlt2">USD</span> Only</button>
+    </div>
+
+    <div class="toggle-group">
+        <span style="font-family: var(--mono); font-size: 9.5px; color: var(--gray); margin-right: 4px;">Bank Accounts:</span>
+        <button class="toggle-btn bank-toggle active" id="bankBtn1" onclick="toggleBank(1, this)">1 · BRAC Bank</button>
+        <button class="toggle-btn bank-toggle active" id="bankBtn2" onclick="toggleBank(2, this)">2 · Dutch Bangla</button>
+        <button class="toggle-btn bank-toggle active" id="bankBtn3" onclick="toggleBank(3, this)">3 · Meghna Bank</button>
         <button class="print-trigger" onclick="window.print()">🖨 Print</button>
     </div>
 </div>
@@ -1021,11 +1037,27 @@ function updateAltLabels() {
 let currMode = "both";
 function setCurrencyMode(mode, btn) {
     currMode = mode;
-    document.querySelectorAll(".toggle-btn").forEach(b => b.classList.remove("active"));
+    document.querySelectorAll(".toggle-btn:not(.bank-toggle)").forEach(b => b.classList.remove("active"));
     btn.classList.add("active");
     document.body.classList.remove("hide-bdt","hide-alt");
     if (mode === "bdt") document.body.classList.add("hide-alt");
     if (mode === "alt") document.body.classList.add("hide-bdt");
+}
+
+/* ─── BANK ACCOUNT DISPLAY (manual show/hide, independent toggles) ─── */
+// true = shown, false = hidden. All three shown by default.
+let bankState = { 1: true, 2: true, 3: true };
+
+function toggleBank(num, btn) {
+    bankState[num] = !bankState[num];
+    btn.classList.toggle("active", bankState[num]);
+    applyBankVisibility();
+}
+
+function applyBankVisibility() {
+    document.body.classList.toggle("hide-bank1", !bankState[1]);
+    document.body.classList.toggle("hide-bank2", !bankState[2]);
+    document.body.classList.toggle("hide-bank3", !bankState[3]);
 }
 
 /* ─── PASSENGERS ─── */
@@ -1079,8 +1111,10 @@ function generateDocument() {
     }
     updateAltLabels();
 
-    // Bank details: Corporate Invoice shows Meghna Bank only
-    document.body.classList.toggle("corp-invoice-mode", isCorp);
+    // Bank account visibility: keeps whatever the user picked in the Print Controls panel
+    // (defaults to all three shown). Change it any time with the 1 / 2 / 3 toggle buttons
+    // before printing — works the same for Corporate Invoice, Commercial Invoice or Quotation.
+    applyBankVisibility();
 
     // Meta
     const rawDate = document.getElementById("invoiceDate").value;
