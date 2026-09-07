@@ -34,6 +34,66 @@ body {
     padding: 16px;
 }
 
+/* ══════════════ TOP NAV ══════════════ */
+.topnav {
+    max-width: 1120px;
+    margin: 0 auto 14px;
+    background: var(--ink);
+    border-radius: 10px;
+    padding: 10px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.topnav .tn-brand {
+    font-family: var(--display);
+    font-size: 13px;
+    font-weight: 800;
+    color: #fff;
+    letter-spacing: 0.2px;
+}
+
+.topnav .tn-brand span { color: var(--gold); }
+
+.topnav .tn-links {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.topnav .tn-link {
+    font-family: var(--mono);
+    font-size: 10.5px;
+    font-weight: 500;
+    text-decoration: none;
+    padding: 7px 14px;
+    border-radius: 6px;
+    color: #cbd5e1;
+    border: 1px solid rgba(255,255,255,0.12);
+    background: transparent;
+    cursor: pointer;
+    transition: all 0.15s;
+}
+
+.topnav .tn-link:hover {
+    background: rgba(255,255,255,0.08);
+    color: #fff;
+}
+
+.topnav .tn-link.active {
+    background: var(--gold);
+    color: #1a1300;
+    border-color: var(--gold);
+    font-weight: 700;
+}
+
+.topnav .tn-link.active:hover {
+    background: #e8b122;
+}
+
 /* ══════════════ CONTROL PANEL ══════════════ */
 .panel {
     background: var(--white);
@@ -198,6 +258,110 @@ body {
     flex-wrap: wrap;
     align-items: center;
 }
+
+/* ══════════════ FARE CALCULATOR VIEW ══════════════ */
+.fc-layout {
+    display: grid;
+    grid-template-columns: 1.1fr 1fr;
+    gap: 16px;
+}
+@media (max-width: 760px) {
+    .fc-layout { grid-template-columns: 1fr; }
+}
+
+.fc-inputs { padding-right: 4px; }
+
+.fc-results {
+    background: var(--ink);
+    border-radius: 8px;
+    padding: 16px 18px;
+    color: #cbd5e1;
+}
+
+.fc-note {
+    font-size: 9.5px;
+    color: var(--gray);
+    line-height: 1.6;
+    margin-top: 10px;
+}
+
+.fc-line {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 7px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    font-size: 11px;
+}
+.fc-line strong { font-weight: 700; letter-spacing: 0.2px; }
+.fc-line.fc-neg strong { color: #fca5a5; }
+.fc-line.fc-pos strong { color: #86efac; }
+
+.fc-netbox {
+    margin-top: 14px;
+    background: rgba(255,255,255,0.06);
+    border: 1.5px solid var(--gold);
+    border-radius: 8px;
+    padding: 12px 14px;
+}
+.fc-netbox-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--gold);
+    margin-bottom: 4px;
+    letter-spacing: 0.3px;
+}
+.fc-netbox-amt {
+    font-family: var(--display);
+    font-size: 24px;
+    font-weight: 800;
+    color: #fff;
+}
+
+.fc-method {
+    margin-top: 12px;
+    background: rgba(255,255,255,0.05);
+    border-left: 3px solid var(--gold);
+    border-radius: 5px;
+    padding: 9px 11px;
+}
+.fc-method-title {
+    font-family: var(--mono);
+    font-size: 9.5px;
+    font-weight: 700;
+    color: var(--gold);
+    margin-bottom: 4px;
+}
+.fc-method-body {
+    font-size: 9.5px;
+    color: #b6c4e6;
+    line-height: 1.55;
+}
+
+.fc-age-badge {
+    display: inline-block;
+    background: var(--blue-lt);
+    border: 1.5px solid var(--blue);
+    border-radius: 8px;
+    padding: 7px 12px;
+    font-family: var(--mono);
+    font-weight: 700;
+    color: var(--blue);
+    font-size: 10.5px;
+    margin-right: 8px;
+}
+.fc-fare-tag {
+    display: none;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-family: var(--mono);
+    font-size: 9.5px;
+    font-weight: 700;
+}
+.fc-fare-tag.fc-infant { background:#fee2e2; color:#b02a2a; }
+.fc-fare-tag.fc-child  { background:#fff3d6; color:#8a6200; }
+.fc-fare-tag.fc-adult  { background:#dcfce7; color:#1b7a43; }
 
 /* ══════════════ PRINT CONTROLS ══════════════ */
 .print-controls {
@@ -688,7 +852,7 @@ body.hide-alt .td-alt { display: none !important; }
 /* ══════════════ PRINT MEDIA ══════════════ */
 @media print {
     body { background: #fff; padding: 0; }
-    .panel, .print-controls { display: none !important; }
+    .panel, .print-controls, .topnav, #viewFare { display: none !important; }
     .invoice { display: block !important; width: 100%; min-height: auto; box-shadow: none; padding: 0; }
     * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
 }
@@ -696,7 +860,16 @@ body.hide-alt .td-alt { display: none !important; }
 </head>
 <body>
 
-<div style="max-width: 1120px; margin: auto;">
+<!-- ══════════════ TOP NAV ══════════════ -->
+<div class="topnav">
+    <div class="tn-brand">GO PLANE <span>·</span> RESERVATION TEAM</div>
+    <div class="tn-links">
+        <button type="button" class="tn-link active" id="navInvoiceBtn" onclick="showView('invoice')">Invoice Generator</button>
+        <button type="button" class="tn-link" id="navFareBtn" onclick="showView('fare')">Fare Calculator</button>
+    </div>
+</div>
+
+<div id="viewInvoice" style="max-width: 1120px; margin: auto;">
 
 <!-- ══════════════ CONTROL PANEL ══════════════ -->
 <div class="panel">
@@ -989,6 +1162,197 @@ body.hide-alt .td-alt { display: none !important; }
 </div>
 
 </div><!-- end container -->
+
+<!-- ══════════════ FARE CALCULATOR VIEW ══════════════ -->
+<div id="viewFare" style="max-width: 1120px; margin: auto; display:none;">
+
+    <div class="panel">
+        <div class="panel-head">
+            <h1>GO PLANE — Fare Calculator</h1>
+            <span class="badge">NBR Sec. 52JJ Compliant</span>
+        </div>
+
+        <div class="fc-layout">
+            <div class="fc-inputs">
+                <div class="section-label">Fare Details</div>
+
+                <div class="grid g2">
+                    <div class="field">
+                        <label>Gross Fare (৳)</label>
+                        <input type="number" id="fcGross" oninput="fcCalc()" placeholder="0">
+                    </div>
+                    <div class="field">
+                        <label>Base Fare (৳)</label>
+                        <input type="number" id="fcBase" oninput="fcCalc()" placeholder="0">
+                    </div>
+                </div>
+
+                <div class="grid g2" style="margin-top:10px;">
+                    <div class="field">
+                        <label>Commission (%)</label>
+                        <input type="number" id="fcCommPct" oninput="fcCalc()" placeholder="0" step="0.01">
+                    </div>
+                    <div class="field">
+                        <label>AIT (%)</label>
+                        <input type="number" id="fcAitPct" oninput="fcCalc()" placeholder="0.30" step="0.01">
+                    </div>
+                </div>
+
+                <div class="field" style="margin-top:10px;">
+                    <label>Service Charge — added to customer (৳)</label>
+                    <input type="number" id="fcService" oninput="fcCalc()" placeholder="0">
+                </div>
+
+                <div class="fc-note">Enter Gross Fare and Base Fare — Tax is worked out automatically. AIT is 0.30% of Gross Fare and is deducted from commission before net commission is worked out.</div>
+
+                <!-- Age Checker -->
+                <div class="section-label" style="margin-top:20px;">Passenger Age Checker</div>
+                <div class="grid g3" style="align-items:end;">
+                    <div class="field">
+                        <label>Date of Birth</label>
+                        <input type="date" id="fcDob">
+                    </div>
+                    <div class="field">
+                        <label>Flight Date</label>
+                        <input type="date" id="fcFlightDate">
+                    </div>
+                    <button class="btn btn-blue" style="height:39px;" onclick="fcCalcAge()">Calculate</button>
+                </div>
+                <div id="fcAgeResult" style="display:none; margin-top:12px; display:none;">
+                    <span class="fc-age-badge" id="fcAgeBadge"></span>
+                    <span class="fc-fare-tag" id="fcFareTag"></span>
+                </div>
+            </div>
+
+            <div class="fc-results">
+                <div class="section-label" style="color:#cbd5e1;">Fare Breakdown</div>
+
+                <div class="fc-line"><span>Gross Fare</span><strong id="fcOutGross">৳ 0</strong></div>
+                <div class="fc-line"><span>Base Fare</span><strong id="fcOutBase">৳ 0</strong></div>
+                <div class="fc-line"><span>Tax</span><strong id="fcOutTax">৳ 0</strong></div>
+                <div class="fc-line"><span>Total Commission</span><strong id="fcOutComm">৳ 0</strong></div>
+                <div class="fc-line fc-neg"><span>AIT (0.30% of Gross Fare)</span><strong id="fcOutAit">৳ 0</strong></div>
+                <div class="fc-line fc-pos"><span>Net Commission</span><strong id="fcOutNetComm">৳ 0</strong></div>
+                <div class="fc-line"><span>Service Charge</span><strong id="fcOutService">৳ 0</strong></div>
+
+                <div class="fc-netbox">
+                    <div class="fc-netbox-label">NET FARE PAYABLE</div>
+                    <div class="fc-netbox-amt">৳ <span id="fcOutNetFare">0</span></div>
+                </div>
+
+                <div class="fc-method">
+                    <div class="fc-method-title">Method — Net Fare = Gross − Net Commission + Service Charge</div>
+                    <div class="fc-method-body">Only the agency's net commission (after AIT) is deducted from Gross Fare. Base Fare is only used to work out Commission and AIT — never subtracted from Gross directly.</div>
+                </div>
+
+                <div class="fc-note" style="color:#94a8d6;">All amounts rounded to the nearest integer.</div>
+            </div>
+        </div>
+    </div>
+
+</div><!-- end fare view -->
+
+<script>
+/* ─── FARE CALCULATOR ─── */
+function fcNum(id){
+    const v = parseFloat(document.getElementById(id).value);
+    return isNaN(v) ? 0 : v;
+}
+function fcFmt(n){
+    return Math.round(n).toLocaleString('en-US');
+}
+function fcCalc(){
+    const gross = fcNum('fcGross');
+    const base  = fcNum('fcBase');
+    const tax   = gross - base;
+    const commPct = fcNum('fcCommPct');
+    const aitPct  = document.getElementById('fcAitPct').value === '' ? 0.30 : fcNum('fcAitPct');
+    const service = fcNum('fcService');
+
+    const totalComm = base * (commPct/100);
+    const ait       = gross * (aitPct/100);
+    const netComm   = totalComm - ait;
+    const netFare   = gross - netComm + service;
+
+    document.getElementById('fcOutGross').textContent    = '৳ ' + fcFmt(gross);
+    document.getElementById('fcOutBase').textContent     = '৳ ' + fcFmt(base);
+    document.getElementById('fcOutTax').textContent      = '৳ ' + fcFmt(tax);
+    document.getElementById('fcOutComm').textContent     = '৳ ' + fcFmt(totalComm);
+    document.getElementById('fcOutAit').textContent      = '− ৳ ' + fcFmt(ait);
+    document.getElementById('fcOutNetComm').textContent  = '৳ ' + fcFmt(netComm);
+    document.getElementById('fcOutService').textContent  = '৳ ' + fcFmt(service);
+    document.getElementById('fcOutNetFare').textContent  = fcFmt(netFare);
+}
+
+function fcCalcAge(){
+    const dobVal = document.getElementById('fcDob').value;
+    const fdVal  = document.getElementById('fcFlightDate').value;
+    if(!dobVal || !fdVal) return;
+
+    const dob = new Date(dobVal);
+    const fd  = new Date(fdVal);
+
+    let years  = fd.getFullYear() - dob.getFullYear();
+    let months = fd.getMonth() - dob.getMonth();
+    let days   = fd.getDate() - dob.getDate();
+
+    if(days < 0){
+        months -= 1;
+        const prevMonth = new Date(fd.getFullYear(), fd.getMonth(), 0);
+        days += prevMonth.getDate();
+    }
+    if(months < 0){
+        years -= 1;
+        months += 12;
+    }
+
+    const resultDiv = document.getElementById('fcAgeResult');
+    const badge = document.getElementById('fcAgeBadge');
+    const tag   = document.getElementById('fcFareTag');
+    resultDiv.style.display = 'flex';
+
+    if(years < 0){
+        badge.textContent = 'Flight date is before date of birth';
+        tag.style.display = 'none';
+        return;
+    }
+
+    badge.textContent = years + ' yr  ' + months + ' mo  ' + days + ' d (at flight date)';
+    tag.style.display = 'inline-block';
+
+    if(years < 2){
+        tag.textContent = 'INFANT FARE';
+        tag.className = 'fc-fare-tag fc-infant';
+    } else if(years < 12){
+        tag.textContent = 'CHILD FARE';
+        tag.className = 'fc-fare-tag fc-child';
+    } else {
+        tag.textContent = 'ADULT FARE';
+        tag.className = 'fc-fare-tag fc-adult';
+    }
+}
+
+/* ─── VIEW SWITCHING ─── */
+function showView(view){
+    const invBtn  = document.getElementById('navInvoiceBtn');
+    const fareBtn = document.getElementById('navFareBtn');
+    const invView = document.getElementById('viewInvoice');
+    const fareView = document.getElementById('viewFare');
+
+    if(view === 'fare'){
+        invView.style.display = 'none';
+        fareView.style.display = 'block';
+        invBtn.classList.remove('active');
+        fareBtn.classList.add('active');
+        fcCalc();
+    } else {
+        fareView.style.display = 'none';
+        invView.style.display = 'block';
+        fareBtn.classList.remove('active');
+        invBtn.classList.add('active');
+    }
+}
+</script>
 
 <script>
 /* ─── UTILITIES ─── */
